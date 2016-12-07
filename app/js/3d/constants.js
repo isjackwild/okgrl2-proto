@@ -2,6 +2,12 @@ export const SKYBOX_RADIUS = 30;
 export const SKYBOX_SEGS = 30;
 
 export const CAMERA_FOV = 75;
+export const CAMERA_ORBIT_OFFSET = 5;
 
 export const SHOP_TARGET_RADIUS = 2;
+export const SHOP_TARGET_FOCUS_SCALE = 2;
+export const SHOP_HITAREA_RADIUS = SHOP_TARGET_RADIUS * SHOP_TARGET_FOCUS_SCALE;
 export const SHOP_TARGET_DISTANCE = (SKYBOX_RADIUS - SHOP_TARGET_RADIUS);
+
+export const SCALE_DAMPING = 0.915;
+export const SCALE_SPRING = 0.04;
