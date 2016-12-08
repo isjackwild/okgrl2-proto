@@ -1,5 +1,5 @@
 const THREE = require('three');
-import { SHOP_TARGET_RADIUS, SHOP_HITAREA_RADIUS, SHOP_TARGET_FOCUS_SCALE, SCALE_SPRING, SCALE_DAMPING } from './constants.js';
+import { SHOP_TARGET_RADIUS, SHOP_HITAREA_RADIUS, SHOP_TARGET_FOCUS_SCALE, SCALE_SPRING, SCALE_DAMPING, SHOP_TARGET_MAX_WANDER } from './constants.js';
 import { pointerPosition } from './input-handler.js';
 
 class ShopTarget extends THREE.Object3D {
@@ -14,9 +14,7 @@ class ShopTarget extends THREE.Object3D {
 		this.targetScale = 1;
 		this.scaleVelocity = 0;
 
-		console.log(position.x);
 		this.position.copy(position);
-		console.log(this.position.x);
 		this.targetPosition = new THREE.Vector3().copy(position);
 		this.restPosition = new THREE.Vector3().copy(position);
 		this.positionVelocity = new THREE.Vector3(0, 0, 0);
@@ -60,7 +58,6 @@ class ShopTarget extends THREE.Object3D {
 		this.isFocused = true;
 		this.targetScale = SHOP_TARGET_FOCUS_SCALE;
 		this.targetPosition.copy(pointerPosition);
-		console.log(new THREE.Vector3().copy(this.targetPosition).sub(this.position).multiplyScalar(SCALE_SPRING));
 	}
 
 	onBlur() {
@@ -68,7 +65,6 @@ class ShopTarget extends THREE.Object3D {
 		this.isFocused = false;
 		this.targetScale = 1;
 		this.targetPosition.copy(this.restPosition);
-		console.log(new THREE.Vector3().copy(this.targetPosition).sub(this.position).multiplyScalar(SCALE_SPRING));
 	}
 
 	update(delta) {
@@ -77,6 +73,15 @@ class ShopTarget extends THREE.Object3D {
 		} else {
 			this.targetPosition.copy(this.restPosition);
 		}
+		
+		if (this.targetPosition.distanceTo(this.restPosition) > SHOP_TARGET_MAX_WANDER) {
+			const clampedTargetVector = new THREE.Vector3().copy(this.targetPosition).sub(this.restPosition).normalize().multiplyScalar(SHOP_TARGET_MAX_WANDER);
+			this.targetPosition.copy(this.restPosition).add(clampedTargetVector);
+		}
+
+
+		
+
 
 		this.scaleVelocity += (this.targetScale - this.currentScale) * SCALE_SPRING;
 		this.currentScale += this.scaleVelocity *= SCALE_DAMPING;

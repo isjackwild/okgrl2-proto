@@ -42,7 +42,7 @@ export const init = () => {
 	// const y = (SHOP_TARGET_DISTANCE * Math.sin(phi) * Math.sin(theta));
 	// const z = SHOP_TARGET_DISTANCE * Math.cos(phi);
 	
-	spherical.set(SHOP_TARGET_DISTANCE, Math.PI / 1.9, Math.PI * 1.5)
+	spherical.set(SHOP_TARGET_DISTANCE, Math.PI / 1.9, Math.PI)
 	const pos = new THREE.Vector3().setFromSpherical(spherical);
 	const shopTarget = new ShopTarget(pos);
 	shopTargets.push(shopTarget);

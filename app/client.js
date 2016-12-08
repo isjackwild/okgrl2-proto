@@ -1,5 +1,7 @@
 import app from './app.js';
 import _ from 'lodash';
+import MobileDetect from 'mobile-detect';
+
 
 import { init as initLoop, onResize as onResizeRenderer, onFocus as onFocusLoop, renderer } from './js/3d/loop.js';
 import { init as initScene } from './js/3d/scene.js';
@@ -9,6 +11,10 @@ import { init as initInput } from './js/3d/input-handler.js';
 
 const kickIt = () => {
 	console.log('OKGrl!');
+
+	const md = new MobileDetect(window.navigator.userAgent);
+	window.mobile = md.mobile() ? true : false;
+
 	addEventListeners();
 	
 	initCamera();
