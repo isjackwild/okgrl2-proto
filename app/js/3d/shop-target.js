@@ -18,6 +18,7 @@ class ShopTarget extends THREE.Object3D {
 		this.targetPosition = new THREE.Vector3().copy(position);
 		this.restPosition = new THREE.Vector3().copy(position);
 		this.positionVelocity = new THREE.Vector3(0, 0, 0);
+		this.restToTargetVector = new THREE.Vector3();
 
 		this.setupTarget();
 		this.setupHitArea();
@@ -48,7 +49,7 @@ class ShopTarget extends THREE.Object3D {
 			transparent: true,
 			opacity: 0.2,
 		});
-		material.visible = false;
+		// material.visible = false;
 		this.hitArea = new THREE.Mesh(geom, material);
 		this.add(this.hitArea);
 	}
@@ -68,19 +69,31 @@ class ShopTarget extends THREE.Object3D {
 	}
 
 	update(delta) {
+		// if (this.isFocused) {
+		// 	this.targetPosition.copy(pointerPosition);
+		// } else {
+		// 	this.targetPosition.copy(this.restPosition);
+		// }
+		
+		// if (this.targetPosition.distanceTo(this.restPosition) > SHOP_TARGET_MAX_WANDER) {
+		// 	const clampedTargetVector = new THREE.Vector3().copy(this.targetPosition).sub(this.restPosition).normalize().multiplyScalar(SHOP_TARGET_MAX_WANDER);
+		// 	this.targetPosition.copy(this.restPosition).add(clampedTargetVector);
+		// }
+
+
 		if (this.isFocused) {
 			this.targetPosition.copy(pointerPosition);
+			this.restToTargetVector
+				.copy(this.targetPosition)
+				.sub(this.restPosition);
+			const scalar = 1 - (this.restToTargetVector.length() / SHOP_TARGET_MAX_WANDER);
+			this.restToTargetVector
+				.multiplyScalar(Math.max(0, scalar))
+				.clampLength(0, SHOP_TARGET_MAX_WANDER);
+			this.targetPosition.copy(this.restPosition).add(this.restToTargetVector);
 		} else {
 			this.targetPosition.copy(this.restPosition);
 		}
-		
-		if (this.targetPosition.distanceTo(this.restPosition) > SHOP_TARGET_MAX_WANDER) {
-			const clampedTargetVector = new THREE.Vector3().copy(this.targetPosition).sub(this.restPosition).normalize().multiplyScalar(SHOP_TARGET_MAX_WANDER);
-			this.targetPosition.copy(this.restPosition).add(clampedTargetVector);
-		}
-
-
-		
 
 
 		this.scaleVelocity += (this.targetScale - this.currentScale) * SCALE_SPRING;
