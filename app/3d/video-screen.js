@@ -4,35 +4,37 @@ import PubSub from 'pubsub-js';
 import { VIDEO_SRC_SD } from './constants.js';
 
 class VideoScreen extends THREE.Object3D {
-	constructor(w, h, pos) {
+	constructor(geom, pos) {
 		super();
 
 		this.position.copy(pos);
-		this.w = w;
-		this.h = h;
+		this.geom = geom;
 
 		this.isFocused = false;
 		this.video = undefined;
 		this.map = undefined;
 
+		this.lookAt(new THREE.Vector3(0, 0, 0));
 		this.setup();
 	}
 
 	setup() {
 		this.video = document.createElement('video');
 		this.video.autoplay = true;
-		this.video.mute = true;
+		this.video.muted = true;
 		this.video.src = VIDEO_SRC_SD;
 
 		this.map = new THREE.Texture(this.video);
-		const geom = new THREE.PlaneGeometry(this.w, this.h, 1);
+		this.map.minFilter = THREE.NearestFilter;
+		// const geom = new THREE.PlaneGeometry(this.w, this.h, 1);
+
 		const material = new THREE.MeshStandardMaterial({
 			color: 0xffffff,
 			metalness: 0,
 			roughness: 0,
 			map: this.map,
 		});
-		const mesh = new THREE.Mesh(geom, material);
+		const mesh = new THREE.Mesh(this.geom, material);
 		this.add(mesh);
 	}
 

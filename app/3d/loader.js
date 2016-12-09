@@ -1,5 +1,5 @@
 const THREE = require('three');
+require('../vendor/ColladaLoader.js');
 
-const loader = new THREE.TextureLoader();
-
-export default loader;
+export const textureLoader = new THREE.TextureLoader();
+export const colladaLoader = new THREE.ColladaLoader();

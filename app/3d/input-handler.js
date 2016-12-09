@@ -2,7 +2,7 @@ const THREE = require('three');
 import _ from 'lodash';
 
 import { camera } from './camera.js';
-import { shopTargets } from './scene.js';
+import { targets } from './scene.js';
 import { SHOP_TARGET_DISTANCE, CAMERA_ORBIT_OFFSET } from './constants.js';
 
 const mouseVector = new THREE.Vector3();
@@ -40,7 +40,7 @@ const onDeviceOrientation = ({ clientX, clientY }) => {
 }
 
 const cast = () => {
-	shopTargets.forEach((target) => {
+	targets.forEach((target) => {
 		const intersects = raycaster.intersectObject( target, true );
 		if (intersects.length) return target.onFocus();
 		target.onBlur();
