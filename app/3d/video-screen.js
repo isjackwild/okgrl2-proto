@@ -13,8 +13,7 @@ class VideoScreen extends THREE.Object3D {
 		this.isFocused = false;
 		this.video = undefined;
 		this.map = undefined;
-
-		this.lookAt(new THREE.Vector3(0, 0, 0));
+		
 		this.setup();
 	}
 
