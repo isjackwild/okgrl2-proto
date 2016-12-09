@@ -14,4 +14,4 @@ export const SCALE_DAMPING = 0.93;
 export const SCALE_SPRING = 0.03;
 
 export const SPHEREMAP_SRC = 'assets/maps/sphere-map.jpg';
-export const VIDEO_SRC = 'assets/maps/video.mp4';
+export const VIDEO_SRC_SD = 'assets/maps/nicopanda-low.mp4';

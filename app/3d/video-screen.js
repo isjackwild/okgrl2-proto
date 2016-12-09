@@ -1,7 +1,7 @@
 const THREE = require('three');
 import PubSub from 'pubsub-js';
 
-import { VIDEO_SRC } from './constants.js';
+import { VIDEO_SRC_SD } from './constants.js';
 
 class VideoScreen extends THREE.Object3D {
 	constructor(w, h, pos) {
@@ -22,7 +22,7 @@ class VideoScreen extends THREE.Object3D {
 		this.video = document.createElement('video');
 		this.video.autoplay = true;
 		this.video.mute = true;
-		this.video.src = VIDEO_SRC;
+		this.video.src = VIDEO_SRC_SD;
 
 		this.map = new THREE.Texture(this.video);
 		const geom = new THREE.PlaneGeometry(this.w, this.h, 1);
@@ -30,7 +30,6 @@ class VideoScreen extends THREE.Object3D {
 			color: 0xffffff,
 			metalness: 0,
 			roughness: 0,
-			wireframe: true,
 			map: this.map,
 		});
 		const mesh = new THREE.Mesh(geom, material);
