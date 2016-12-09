@@ -1,8 +1,8 @@
 const THREE = require('three');
 import loader from './loader.js'
-import { SKYBOX_SEGS, SKYBOX_RADIUS } from './constants.js';
+import { SKYBOX_SEGS, SKYBOX_RADIUS, SPHEREMAP_SRC } from './constants.js';
 
-const texture = loader.load('assets/maps/sphere-map.jpg');
+const texture = loader.load(SPHEREMAP_SRC);
 texture.minFilter = THREE.LinearFilter;
 texture.magFilter = THREE.LinearFilter;
 texture.generateMipmaps = false;

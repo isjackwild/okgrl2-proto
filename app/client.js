@@ -16,6 +16,7 @@ const kickIt = () => {
 
 	const md = new MobileDetect(window.navigator.userAgent);
 	window.mobile = md.mobile() ? true : false;
+	if (window.mobile) document.body.classList.add('mobile');
 
 	addEventListeners();
 	

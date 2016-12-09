@@ -7,7 +7,6 @@ class ShopTarget extends THREE.Object3D {
 	constructor(position, details) {
 		super();
 		this.details = details;
-		console.log(this.details);
 
 		this.target = undefined;
 		this.hitArea = undefined;

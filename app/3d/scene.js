@@ -6,9 +6,11 @@ import { camera, controls } from './camera.js';
 import { mesh as skybox } from './skybox.js';
 import { lights } from './lighting.js';
 import ShopTarget from './shop-target.js'
+import VideoScreen from './video-screen.js'
 import { pointerPosition } from './input-handler.js';
 const maxRotation = { x: 1, y: 1 };
 export const shopTargets = [];
+let videoScreen = undefined;
 
 const TWO_PI = Math.PI * 2;
 const FOUR_PI = Math.PI * 4;
@@ -27,20 +29,6 @@ export const init = () => {
 	});
 
 	scene.add(new THREE.AxisHelper(10));
-
-	// const pos = new THREE.Vector3(-SHOP_TARGET_DISTANCE, 0, 0);
-	// pos.applyAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2);
-	// pos.applyAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI / 2);
-	
-	// const u = 5;
-	// const v = 1;
-	// const theta = TWO_PI * u;
-	// const phi = Math.acos(2 * v - 1);
-	// const phi = Math.PI * 1;
-	// const theta = 0;
-	// const x = (SHOP_TARGET_DISTANCE * Math.sin(phi) * Math.cos(theta));
-	// const y = (SHOP_TARGET_DISTANCE * Math.sin(phi) * Math.sin(theta));
-	// const z = SHOP_TARGET_DISTANCE * Math.cos(phi);
 	
 	spherical.set(SHOP_TARGET_DISTANCE, Math.PI / 1.9, Math.PI)
 	const pos = new THREE.Vector3().setFromSpherical(spherical);
@@ -52,6 +40,8 @@ export const init = () => {
 	shopTargets.push(shopTarget);
 	scene.add(shopTarget);
 
+	videoScreen = new VideoScreen(16, 9, new THREE.Vector3(0, 0, -20));
+	scene.add(videoScreen);
 
 
 	const geom = new THREE.SphereGeometry(1, 20, 20);
@@ -66,16 +56,11 @@ export const init = () => {
 }
 
 export const update = (delta) => {
-	// shopTargets.forEach(s => s.rotation.y += 0.01);
 	if (controls) controls.update(delta);
-	// pointer.position.copy(camera.get)
 	pointer.position.copy(pointerPosition);
-	
-	// pointer.position.y += 0.01;
-	// phi += 0.001;
-	// theta += 0.01;
-	// 
+
 	shopTargets.forEach((target) => {
 		target.update(delta);
 	});
+	videoScreen.update();
 }

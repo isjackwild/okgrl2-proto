@@ -12,3 +12,6 @@ export const SHOP_TARGET_DISTANCE = (SKYBOX_RADIUS - SHOP_TARGET_RADIUS);
 
 export const SCALE_DAMPING = 0.93;
 export const SCALE_SPRING = 0.03;
+
+export const SPHEREMAP_SRC = 'assets/maps/sphere-map.jpg';
+export const VIDEO_SRC = 'assets/maps/video.mp4';
