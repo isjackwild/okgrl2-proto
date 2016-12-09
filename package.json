@@ -15,10 +15,13 @@
     "deploy": "rsync -rlptDzP build/ root@isjackwild.com:/var/www/sketchbook.isjackwild.com/public_html/okgrl-panda-proto/"
   },
   "dependencies": {
+    "gsap": "^1.19.0",
     "gulp-util": "^3.0.7",
     "lodash": "^4.13.1",
     "mobile-detect": "^1.3.5",
     "pubsub-js": "^1.5.3",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
     "three": "^0.81.2"
   },
   "devDependencies": {

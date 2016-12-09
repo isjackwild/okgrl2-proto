@@ -1,12 +1,14 @@
-import app from './app.js';
+import React from 'react';
+import { render } from 'react-dom';
 import _ from 'lodash';
 import MobileDetect from 'mobile-detect';
 
+import Master from './ui/layouts/Master.js';
 
-import { init as initLoop, onResize as onResizeRenderer, onFocus as onFocusLoop, renderer } from './js/3d/loop.js';
-import { init as initScene } from './js/3d/scene.js';
-import { init as initCamera, onResize as onResizeCamera, camera } from './js/3d/camera.js';
-import { init as initInput } from './js/3d/input-handler.js';
+import { init as initLoop, onResize as onResizeRenderer, onFocus as onFocusLoop, renderer } from './3d/loop.js';
+import { init as initScene } from './3d/scene.js';
+import { init as initCamera, onResize as onResizeCamera, camera } from './3d/camera.js';
+import { init as initInput } from './3d/input-handler.js';
 
 
 const kickIt = () => {
@@ -21,7 +23,14 @@ const kickIt = () => {
 	initScene();
 	initLoop();
 	initInput();
+	initUI();
 }
+
+const initUI = () => {
+	render((
+		<Master/>
+	), document.getElementById('react-root'));
+} 
 
 const onResize = () => {
 	onResizeCamera();
