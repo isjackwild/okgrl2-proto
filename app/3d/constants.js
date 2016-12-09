@@ -15,4 +15,4 @@ export const SCALE_SPRING = 0.03;
 
 export const SPHEREMAP_SRC = 'assets/maps/sphere-map.jpg';
 export const VIDEO_SRC_SD = 'assets/maps/nicopanda-low.mp4';
-export const GEOM_SRC = 'assets/geom/jackisthebest8.dae';
+export const GEOM_SRC = 'assets/geom/jackisthebest9.dae';

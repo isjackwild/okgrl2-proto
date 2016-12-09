@@ -1,4 +1,5 @@
 const THREE = require('three');
+import PubSub from 'pubsub-js';
 
 export let scene;
 import { SKYBOX_RADIUS, SHOP_TARGET_DISTANCE, CAMERA_ORBIT_OFFSET, SPHEREMAP_SRC } from './constants.js';

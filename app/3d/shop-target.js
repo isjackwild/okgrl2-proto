@@ -60,6 +60,7 @@ class ShopTarget extends THREE.Object3D {
 
 	onFocus() {
 		if (this.isFocused) return;
+		console.log('focus');
 		this.isFocused = true;
 		this.targetScale = SHOP_TARGET_FOCUS_SCALE;
 		this.targetPosition.copy(pointerPosition);
@@ -68,6 +69,7 @@ class ShopTarget extends THREE.Object3D {
 
 	onBlur() {
 		if (!this.isFocused) return;
+		console.log('blur');
 		this.isFocused = false;
 		this.targetScale = 1;
 		this.targetPosition.copy(this.restPosition);

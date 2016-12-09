@@ -13,7 +13,7 @@ class VideoScreen extends THREE.Object3D {
 		this.isFocused = false;
 		this.video = undefined;
 		this.map = undefined;
-		
+
 		this.setup();
 	}
 
@@ -24,8 +24,7 @@ class VideoScreen extends THREE.Object3D {
 		this.video.src = VIDEO_SRC_SD;
 
 		this.map = new THREE.Texture(this.video);
-		// this.map.minFilter = THREE.NearestFilter;
-		// const geom = new THREE.PlaneGeometry(16, 9, 1);
+		this.map.minFilter = THREE.NearestFilter;
 
 		const material = new THREE.MeshStandardMaterial({
 			color: 0xffffff,
@@ -33,11 +32,9 @@ class VideoScreen extends THREE.Object3D {
 			roughness: 0,
 			map: this.map,
 		});
-		// const mesh = new THREE.Mesh(this.geom, material);
 		material.side = THREE.DoubleSide;
 		this.mesh.material = material;
 
-		// console.log(this.geom, geom);
 		this.add(this.mesh);
 	}
 
