@@ -23,31 +23,41 @@ const spherical = new THREE.Spherical();
 export const init = (geometries, textures) => {
 	console.log(geometries);
 	const skyboxObj = geometries[0];
-	const tv = geometries[1];
-	const targetTV = geometries[2];
-	const targetsShop = [geometries[3]];
+	const tv = geometries[3];
+	// const targetTV = geometries[1];
+	const targetsShop = [geometries[1], geometries[2]];
 
 
 	// SKYBOX
-	initSkybox(skyboxObj.scale.x, textures[0]);
+	initSkybox(skyboxObj.children[0], textures[0]);
 	
-	
+
 
 	// SHOP TARGETS	
 	targetsShop.forEach((target) => {
 		const pos = new THREE.Vector3().copy(target.position);
+		console.log(pos, '<<<');
 		const details = {
 			name: 'AWESOME HANDBAG!!!!!!',
 			link: 'http://www.nicopanda.com/',
 		}
-		const shopTarget = new ShopTarget(pos, details);
+
+		const onFocus = () => {
+			PubSub.publish('shop.show', details);
+		}
+
+		const onBlur = () => {
+			PubSub.publish('shop.hide', false);
+		}
+
+		const shopTarget = new ShopTarget(pos, details, onFocus, onBlur);
 		targets.push(shopTarget);
 	});
 	
 
 	// TV
-	const pos = new THREE.Vector3().copy(tv.position)
-	videoScreen = new VideoScreen(16, 9, pos);
+	const pos = new THREE.Vector3().copy(tv.position);
+	videoScreen = new VideoScreen(tv.children[0], pos);
 	
 	// TV TARGET
 	// ...
@@ -72,8 +82,14 @@ export const init = (geometries, textures) => {
 	targets.forEach((target) => {
 		scene.add(target);
 	});
-	// scene.add(videoScreen);
+	scene.add(videoScreen);
 	scene.add(pointer);
+
+	// geometries.forEach((geo) => {
+	// 	scene.add(geo);
+	// });
+
+	// scene.add(tv);
 }
 
 

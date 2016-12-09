@@ -9,7 +9,7 @@ export let camera, controls;
 
 
 export const init = () => {
-	camera = new THREE.PerspectiveCamera(CAMERA_FOV, window.innerWidth / window.innerHeight, 1, 10000);
+	camera = new THREE.PerspectiveCamera(CAMERA_FOV, window.innerWidth / window.innerHeight, 0.0001, 10000);
 	// camera.position.set(0, 0, CAMERA_ORBIT_OFFSET);
 	// camera.lookAt(0,0,0);
 	controls = new THREE.OrbitControls(camera);
@@ -18,8 +18,8 @@ export const init = () => {
 		camera.position.y,
 		camera.position.z - CAMERA_ORBIT_OFFSET,
 	);
-	controls.noPan = true;
-	controls.noZoom = true;
+	// controls.noPan = true;
+	// controls.noZoom = true;
 
 	window.addEventListener('deviceorientation', setOrientationControls, true);
 }

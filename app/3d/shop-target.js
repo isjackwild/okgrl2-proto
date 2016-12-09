@@ -4,14 +4,15 @@ import { SHOP_TARGET_RADIUS, SHOP_HITAREA_RADIUS, SHOP_TARGET_FOCUS_SCALE, SCALE
 import { pointerPosition } from './input-handler.js';
 
 class ShopTarget extends THREE.Object3D {
-	constructor(position, details) {
+	constructor(position, details, onFocus, onBlur) {
 		super();
-		this.details = details;
 
 		this.target = undefined;
 		this.hitArea = undefined;
 
 		this.isFocused = false;
+		this._onFocus = onFocus;
+		this._onBlur = onBlur;
 
 		this.currentScale = 1;
 		this.targetScale = 1;
@@ -62,7 +63,7 @@ class ShopTarget extends THREE.Object3D {
 		this.isFocused = true;
 		this.targetScale = SHOP_TARGET_FOCUS_SCALE;
 		this.targetPosition.copy(pointerPosition);
-		PubSub.publish('shop.show', this.details);
+		this._onFocus();
 	}
 
 	onBlur() {
@@ -70,7 +71,7 @@ class ShopTarget extends THREE.Object3D {
 		this.isFocused = false;
 		this.targetScale = 1;
 		this.targetPosition.copy(this.restPosition);
-		PubSub.publish('shop.hide', false);
+		this._onBlur();
 	}
 
 	update(delta) {

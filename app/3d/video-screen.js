@@ -4,11 +4,11 @@ import PubSub from 'pubsub-js';
 import { VIDEO_SRC_SD } from './constants.js';
 
 class VideoScreen extends THREE.Object3D {
-	constructor(geom, pos) {
+	constructor(mesh, pos) {
 		super();
 
 		this.position.copy(pos);
-		this.geom = geom;
+		this.mesh = mesh;
 
 		this.isFocused = false;
 		this.video = undefined;
@@ -25,8 +25,8 @@ class VideoScreen extends THREE.Object3D {
 		this.video.src = VIDEO_SRC_SD;
 
 		this.map = new THREE.Texture(this.video);
-		this.map.minFilter = THREE.NearestFilter;
-		// const geom = new THREE.PlaneGeometry(this.w, this.h, 1);
+		// this.map.minFilter = THREE.NearestFilter;
+		// const geom = new THREE.PlaneGeometry(16, 9, 1);
 
 		const material = new THREE.MeshStandardMaterial({
 			color: 0xffffff,
@@ -34,8 +34,12 @@ class VideoScreen extends THREE.Object3D {
 			roughness: 0,
 			map: this.map,
 		});
-		const mesh = new THREE.Mesh(this.geom, material);
-		this.add(mesh);
+		// const mesh = new THREE.Mesh(this.geom, material);
+		material.side = THREE.DoubleSide;
+		this.mesh.material = material;
+
+		// console.log(this.geom, geom);
+		this.add(this.mesh);
 	}
 
 	update() {
