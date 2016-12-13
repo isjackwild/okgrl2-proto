@@ -19,25 +19,25 @@ const FOUR_PI = Math.PI * 4;
 let pointer;
 
 const spherical = new THREE.Spherical();
+const tmpPos = new THREE.Vector3();
 
 
 export const init = (geometries, textures) => {
-	console.log(geometries);
 	const skyboxObj = geometries[0];
 	const tv = geometries[3];
 	// const targetTV = geometries[1];
-	const targetsShop = [geometries[1], geometries[2]];
+	const targetsShop = [geometries[2]];
+	const targetTv = geometries[1];
 
 
 	// SKYBOX
+	initCamera();
 	initSkybox(skyboxObj.children[0], textures[0]);
-	
 
 
 	// SHOP TARGETS	
 	targetsShop.forEach((target) => {
-		const pos = new THREE.Vector3().copy(target.position);
-		console.log(pos, '<<<');
+		tmpPos.copy(target.position);
 		const details = {
 			name: 'AWESOME HANDBAG!!!!!!',
 			link: 'http://www.nicopanda.com/',
@@ -51,14 +51,20 @@ export const init = (geometries, textures) => {
 			PubSub.publish('shop.hide', false);
 		}
 
-		const shopTarget = new ShopTarget(pos, details, onFocus, onBlur);
+		const shopTarget = new ShopTarget({ position: tmpPos, details, onFocus, onBlur });
 		targets.push(shopTarget);
 	});
-	
+
+	tmpPos.copy(targetTv.position);
+	const onClick = () => {
+		console.log('play video');	
+	}
+	const tvTarget = new ShopTarget({ position: tmpPos, onClick });
+	targets.push(tvTarget);
 
 	// TV
-	const pos = new THREE.Vector3().copy(tv.position);
-	videoScreen = new VideoScreen(tv.children[0], pos);
+	tmpPos.copy(tv.position);
+	videoScreen = new VideoScreen(tv.children[0], tmpPos);
 	
 	// TV TARGET
 	// ...
@@ -73,7 +79,7 @@ export const init = (geometries, textures) => {
 	});
 	pointer = new THREE.Mesh(geom, material);
 
-	initCamera();
+	
 	scene = new THREE.Scene();
 	scene.add(camera);
 	scene.add(skybox);

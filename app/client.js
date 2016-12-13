@@ -40,7 +40,6 @@ const onLoadedTexture = (texture) => {
 
 const onLoadedGeom = (object) => {
 	geometries = object.scene.children;
-
 	if (textures.length) onLoadedAll();
 }
 

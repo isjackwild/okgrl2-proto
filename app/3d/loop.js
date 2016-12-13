@@ -61,6 +61,7 @@ const animate = () => {
 	then = now ? now : null;
 	now = new Date().getTime();
 	delta = then ? (now - then) / 16.666 : 1;
+	delta = Math.max(delta, 3);
 
 	update(delta);
 	render();

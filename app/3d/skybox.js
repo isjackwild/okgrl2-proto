@@ -18,7 +18,7 @@ export const init = (_mesh, texture) => {
 	});
 	material.side = THREE.BackSide;
 
-	mesh = _mesh
+	mesh = _mesh;
 	mesh.material = material;
 	mesh.frustrumCulled = false;
 	// mesh.rotation.y = Math.PI / -2;

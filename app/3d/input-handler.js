@@ -8,6 +8,7 @@ import { SHOP_TARGET_DISTANCE, CAMERA_ORBIT_OFFSET } from './constants.js';
 const mouseVector = new THREE.Vector3();
 const raycaster = new THREE.Raycaster();
 export const pointerPosition = new THREE.Vector3(0, 0, SHOP_TARGET_DISTANCE);
+export const ray = raycaster.ray;
 const tmpPos = new THREE.Vector3();
 
 

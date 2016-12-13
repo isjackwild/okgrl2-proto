@@ -2,9 +2,10 @@ const THREE = require('three');
 import PubSub from 'pubsub-js';
 import { SHOP_TARGET_RADIUS, SHOP_HITAREA_RADIUS, SHOP_TARGET_FOCUS_SCALE, SCALE_SPRING, SCALE_DAMPING, SHOP_TARGET_MAX_WANDER } from './constants.js';
 import { pointerPosition } from './input-handler.js';
+import { camera } from './camera.js';
 
 class ShopTarget extends THREE.Object3D {
-	constructor(position, details, onFocus, onBlur) {
+	constructor({ position, details, onFocus, onBlur, onClick }) {
 		super();
 
 		this.target = undefined;
@@ -13,6 +14,7 @@ class ShopTarget extends THREE.Object3D {
 		this.isFocused = false;
 		this._onFocus = onFocus;
 		this._onBlur = onBlur;
+		this._onClick = onClick;
 
 		this.currentScale = 1;
 		this.targetScale = 1;
@@ -32,7 +34,8 @@ class ShopTarget extends THREE.Object3D {
 	}
 
 	setupTarget() {
-		const geom = new THREE.SphereGeometry(SHOP_TARGET_RADIUS, 20, 20);
+		// const geom = new THREE.SphereGeometry(SHOP_TARGET_RADIUS, 20, 20);
+		const geom = new THREE.PlaneGeometry(SHOP_TARGET_RADIUS * 2, SHOP_TARGET_RADIUS * 2);
 		const material = new THREE.MeshStandardMaterial({
 			color: 0xff0000,
 			metalness: 0,
@@ -60,37 +63,34 @@ class ShopTarget extends THREE.Object3D {
 
 	onFocus() {
 		if (this.isFocused) return;
-		console.log('focus');
 		this.isFocused = true;
 		this.targetScale = SHOP_TARGET_FOCUS_SCALE;
 		this.targetPosition.copy(pointerPosition);
-		this._onFocus();
+		if (this._onFocus) this._onFocus();
 	}
 
 	onBlur() {
 		if (!this.isFocused) return;
-		console.log('blur');
 		this.isFocused = false;
 		this.targetScale = 1;
 		this.targetPosition.copy(this.restPosition);
-		this._onBlur();
+		if (this._onBlur) this._onBlur();
+	}
+
+	onClick() {
+		if (this._onClick) this._onClick();
 	}
 
 	update(delta) {
-		// if (this.isFocused) {
-		// 	this.targetPosition.copy(pointerPosition);
-		// } else {
-		// 	this.targetPosition.copy(this.restPosition);
-		// }
-		
-		// if (this.targetPosition.distanceTo(this.restPosition) > SHOP_TARGET_MAX_WANDER) {
-		// 	const clampedTargetVector = new THREE.Vector3().copy(this.targetPosition).sub(this.restPosition).normalize().multiplyScalar(SHOP_TARGET_MAX_WANDER);
-		// 	this.targetPosition.copy(this.restPosition).add(clampedTargetVector);
-		// }
-
+		this.lookAt(camera.position);
 
 		if (this.isFocused) {
-			this.targetPosition.copy(pointerPosition);
+			this.targetPosition
+				.copy(pointerPosition)
+				.normalize()
+				.multiplyScalar(this.position.length());
+
+
 			this.restToTargetVector
 				.copy(this.targetPosition)
 				.sub(this.restPosition);
@@ -104,11 +104,11 @@ class ShopTarget extends THREE.Object3D {
 		}
 
 
-		this.scaleVelocity += (this.targetScale - this.currentScale) * SCALE_SPRING;
+		this.scaleVelocity += (this.targetScale - this.currentScale) * SCALE_SPRING * delta;
 		this.currentScale += this.scaleVelocity *= SCALE_DAMPING;
 		this.target.scale.set(this.currentScale, this.currentScale, this.currentScale);
 
-		this.positionVelocity.add(new THREE.Vector3().copy(this.targetPosition).sub(this.position).multiplyScalar(SCALE_SPRING));
+		this.positionVelocity.add(new THREE.Vector3().copy(this.targetPosition).sub(this.position).multiplyScalar(SCALE_SPRING).multiplyScalar(delta));
 		this.position.add(this.positionVelocity.multiplyScalar(SCALE_DAMPING));
 	}
 }
