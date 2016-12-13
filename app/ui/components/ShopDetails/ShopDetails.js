@@ -3,7 +3,7 @@ import PubSub from 'pubsub-js';
 import TweenLite from 'gsap';
 
 const HIDDEN_SCALE = 0.8;
-const TRANSORM_SPEED = 0.4;
+const TRANSORM_SPEED = 0.55;
 
 const view = ({ isVisible, name, link }) => {
 	return (
@@ -44,6 +44,7 @@ const data = Component => class extends React.Component {
 	}
 
 	hide() {
+		this.setState({ isVisible: false });
 		TweenLite.to(this.wrapper, TRANSORM_SPEED, { opacity: 0, scaleX: HIDDEN_SCALE, scaleY: HIDDEN_SCALE, ease: Back.easeOut.config(5) });
 	}
 

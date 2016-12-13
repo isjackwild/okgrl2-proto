@@ -19,8 +19,10 @@ export const init = () => {
 const addEventListeners = () => {
 	if (window.mobile) {
 		window.addEventListener('deviceorientation', _.throttle(onDeviceOrientation, 16.666));
+		window.addEventListener('touchstart', onClick);
 	} else {
 		window.addEventListener('mousemove', _.throttle(onMouseMove, 16.666));
+		window.addEventListener('click', onClick);
 	}
 }
 
@@ -29,22 +31,48 @@ const onMouseMove = ({ clientX, clientY }) => {
 	const y = 1 - 2 * (clientY / window.innerHeight);
 	mouseVector.set(x, y, camera.position.z);
 	raycaster.setFromCamera(mouseVector, camera);
-
-	cast();
+	castFocus();
 }
 
 const onDeviceOrientation = ({ clientX, clientY }) => {
 	// mouseVector.set(0, 0, camera.position.z);
-	console.log('orientation');
 	raycaster.setFromCamera(camera.position, camera);
-	cast();
+	castFocus();
 }
 
-const cast = () => {
+const onClick = ({ clientX, clientY, touches }) => {
+	let x, y;
+	if (touches) {
+		x = 2 * (touches[0].clientX / window.innerWidth) - 1;
+		y = 1 - 2 * (touches[0].clientY / window.innerHeight);
+	} else {
+		x = 2 * (clientX / window.innerWidth) - 1;
+		y = 1 - 2 * (clientY / window.innerHeight);
+	}
+	mouseVector.set(x, y, camera.position.z);
+	raycaster.setFromCamera(mouseVector, camera);
+	castClick();
+}
+
+const castFocus = () => {
+	let found = false;
 	targets.forEach((target) => {
 		const intersects = raycaster.intersectObject( target, true );
-		if (intersects.length) return target.onFocus();
+		if (intersects.length) {
+			found = true;
+			target.onFocus();
+			return;
+		}
 		target.onBlur();
+	});
+	if (found) return document.body.classList.add('pointer');
+	document.body.classList.remove('pointer');
+}
+
+const castClick = () => {
+	targets.forEach((target) => {
+		const intersects = raycaster.intersectObject( target, true );
+		if (intersects.length) return target.onClick();
 	});
 }
 

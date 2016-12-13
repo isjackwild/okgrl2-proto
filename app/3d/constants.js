@@ -15,4 +15,9 @@ export const SCALE_SPRING = 0.022;
 
 export const SPHEREMAP_SRC = 'assets/maps/sphere-map.jpg';
 export const VIDEO_SRC_SD = 'assets/maps/nicopanda-low.mp4';
+export const VIDEO_SRC_HD = 'assets/maps/nicopanda-low.mp4';
 export const GEOM_SRC = 'assets/geom/jackisthebest9.dae';
+
+export const VIDEO_TRANSITION_DURATION = 0.55;
+export const SKYBOX_DIM_OPACITY = 0.3;
+// TODO — VIDEO drops down with a little bounce and rotation :):):):)

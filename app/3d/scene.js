@@ -46,7 +46,6 @@ export const init = (geometries, textures) => {
 		const onFocus = () => {
 			PubSub.publish('shop.show', details);
 		}
-
 		const onBlur = () => {
 			PubSub.publish('shop.hide', false);
 		}
@@ -57,9 +56,17 @@ export const init = (geometries, textures) => {
 
 	tmpPos.copy(targetTv.position);
 	const onClick = () => {
-		console.log('play video');	
+		PubSub.publish('video.show', true);
 	}
-	const tvTarget = new ShopTarget({ position: tmpPos, onClick });
+	const onFocus = () => {
+		if (window.mobile) return;
+		PubSub.publish('video.focus', true);
+	}
+	const onBlur = () => {
+		if (window.mobile) return;
+		PubSub.publish('video.blur', true);
+	}
+	const tvTarget = new ShopTarget({ position: tmpPos, onFocus, onBlur, onClick });
 	targets.push(tvTarget);
 
 	// TV
@@ -90,7 +97,7 @@ export const init = (geometries, textures) => {
 		scene.add(target);
 	});
 	scene.add(videoScreen);
-	scene.add(pointer);
+	// scene.add(pointer);
 
 	// geometries.forEach((geo) => {
 	// 	scene.add(geo);
@@ -102,7 +109,7 @@ export const init = (geometries, textures) => {
 
 export const update = (delta) => {
 	if (controls) controls.update(delta);
-	pointer.position.copy(pointerPosition);
+	// pointer.position.copy(pointerPosition);
 
 	targets.forEach((target) => {
 		target.update(delta);

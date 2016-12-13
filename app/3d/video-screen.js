@@ -20,7 +20,7 @@ class VideoScreen extends THREE.Object3D {
 	setup() {
 		this.video = document.createElement('video');
 		// this.video.autoplay = true;
-		// this.video.muted = true;
+		this.video.muted = true;
 		this.video.src = VIDEO_SRC_SD;
 
 		this.map = new THREE.Texture(this.video);

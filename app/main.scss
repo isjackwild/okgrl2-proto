@@ -9,5 +9,10 @@ html, body {
 	font-family: 'Arial', sans-serif;
 }
 
+.pointer {
+	cursor: pointer !important;
+}
+
 @import './ui/layouts/_master.scss';
 @import './ui/components/ShopDetails/_shop-details.scss';
+@import './ui/components/VideoOverlay/_video-overlay.scss';
