@@ -40,12 +40,24 @@ const data = Component => class extends React.Component {
 
 	show(e, data) {
 		this.setState({ ...data, isVisible: true });
-		TweenLite.to(this.wrapper, TRANSORM_SPEED, { opacity: 1, scaleX: 1, scaleY: 1, ease: Back.easeOut.config(5) });
+		TweenLite.to(this.wrapper, TRANSORM_SPEED, {
+			opacity: 1,
+			scaleX: 1,
+			scaleY: 1,
+			ease: Back.easeOut.config(5),
+			force3D: true,
+		});
 	}
 
 	hide() {
 		this.setState({ isVisible: false });
-		TweenLite.to(this.wrapper, TRANSORM_SPEED, { opacity: 0, scaleX: HIDDEN_SCALE, scaleY: HIDDEN_SCALE, ease: Back.easeOut.config(5) });
+		TweenLite.to(this.wrapper, TRANSORM_SPEED, {
+			opacity: 0,
+			scaleX: HIDDEN_SCALE,
+			scaleY: HIDDEN_SCALE,
+			ease: Back.easeOut.config(5),
+			force3D: true,
+		});
 	}
 
 	render() {

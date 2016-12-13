@@ -94,7 +94,7 @@ class ShopTarget extends THREE.Object3D {
 			this.restToTargetVector
 				.copy(this.targetPosition)
 				.sub(this.restPosition);
-			const scalar = 1 - (this.restToTargetVector.length() / SHOP_TARGET_MAX_WANDER);
+			const scalar = window.mobile ? 1 : 1 - (this.restToTargetVector.length() / SHOP_TARGET_MAX_WANDER);
 			this.restToTargetVector
 				.multiplyScalar(Math.max(0, scalar))
 				.clampLength(0, SHOP_TARGET_MAX_WANDER);

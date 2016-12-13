@@ -4,7 +4,8 @@ import TweenMax from 'gsap';
 
 import { VIDEO_SRC_HD, VIDEO_SRC_SD } from '../../../3d/constants.js';
 
-const TRANSORM_SPEED = 0.6;
+const TRANSORM_SPEED_OUT = 0.6;
+const TRANSORM_SPEED_IN = 0.8;
 
 const view = ({ isVisible, onClick }) => {
 	return (
@@ -38,25 +39,42 @@ const data = Component => class extends React.Component {
 
 	componentDidMount() {
 		this.subs.push(PubSub.subscribe('video.show', this.show));
-		// this.subs.push(PubSub.subscribe('video.hide', this.hide));
 		this.wrapper = document.getElementsByClassName('video-wrapper')[0];
 		this.shim = document.getElementsByClassName('video-wrapper__shim')[0];
 		this.wrapper.appendChild(this.video);
 		TweenMax.set(this.shim, { opacity: 0 });
-		TweenMax.set(this.video, { y: window.innerHeight * -1, rotate: 20 });
+		TweenMax.set(this.video, {
+			y: window.innerHeight * -1 - 150,
+			rotation: (Math.random() * 20) - 10,
+			force3D: true
+		});
 	}
 
 	show() {
 		this.setState({ isVisible: true });
-		TweenMax.to(this.shim, TRANSORM_SPEED, { opacity: 1 });
-		TweenMax.to(this.video, TRANSORM_SPEED, { y: 0, rotate: 0, ease: Back.easeOut.config(1.7) });
+		TweenMax.to(this.shim, TRANSORM_SPEED_IN, { opacity: 1 });
+		TweenMax.to(this.video, TRANSORM_SPEED_IN, {
+			y: 0,
+			rotation: 0,
+			ease: Back.easeOut.config(1.9),
+			force3D: true,
+			onComplete: () => { this.video.play(); }
+		});
+		window.videoShown = true;
 	}
 
 	hide() {
+		this.video.pause();
 		this.setState({ isVisible: false });
-		TweenMax.to(this.video, TRANSORM_SPEED, { y: window.innerHeight * -1, ease: Back.easeIn.config(1.4) });
-		TweenMax.to(this.shim, TRANSORM_SPEED, { opacity: 0 });
-		// PubSub.publish('video.hide', true);
+		TweenMax.to(this.video, TRANSORM_SPEED_OUT, {
+			y: window.innerHeight * -1 - 150,
+			rotation: (Math.random() * 20) - 10,
+			ease: Back.easeIn.config(1.3),
+			force3D: true,
+			onComplete: () => { window.videoShown = false }
+		});
+		TweenMax.to(this.shim, TRANSORM_SPEED_OUT, { opacity: 0 });
+		PubSub.publish('video.hide', true);
 	}
 
 	render() {

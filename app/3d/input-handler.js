@@ -1,5 +1,6 @@
 const THREE = require('three');
 import _ from 'lodash';
+import PubSub from 'pubsub-js';
 
 import { camera } from './camera.js';
 import { targets } from './scene.js';
@@ -18,10 +19,10 @@ export const init = () => {
 
 const addEventListeners = () => {
 	if (window.mobile) {
-		window.addEventListener('deviceorientation', _.throttle(onDeviceOrientation, 16.666));
+		window.addEventListener('deviceorientation', _.throttle(onDeviceOrientation, 33));
 		window.addEventListener('touchstart', onClick);
 	} else {
-		window.addEventListener('mousemove', _.throttle(onMouseMove, 16.666));
+		window.addEventListener('mousemove', _.throttle(onMouseMove, 33));
 		window.addEventListener('click', onClick);
 	}
 }
@@ -65,8 +66,8 @@ const castFocus = () => {
 		}
 		target.onBlur();
 	});
-	if (found) return document.body.classList.add('pointer');
-	document.body.classList.remove('pointer');
+	if (found) return PubSub.publish('target.focus', false);
+	return PubSub.publish('target.blur', false);
 }
 
 const castClick = () => {

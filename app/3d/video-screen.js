@@ -19,7 +19,7 @@ class VideoScreen extends THREE.Object3D {
 
 	setup() {
 		this.video = document.createElement('video');
-		// this.video.autoplay = true;
+		this.video.autoplay = true;
 		this.video.muted = true;
 		this.video.src = VIDEO_SRC_SD;
 
@@ -34,6 +34,9 @@ class VideoScreen extends THREE.Object3D {
 		});
 		material.side = THREE.DoubleSide;
 		this.mesh.material = material;
+
+		PubSub.subscribe('video.show', this.video.pause);
+		PubSub.subscribe('video.hide', this.video.play);
 
 		this.add(this.mesh);
 	}

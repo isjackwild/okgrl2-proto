@@ -35,6 +35,7 @@ const setupRenderer = () => {
 	renderer = new THREE.WebGLRenderer({
 		canvas,
 		antialias: true,
+		preserveDrawingBuffer: true,
 	});
 
 	renderer.setClearColor(0x282828);
@@ -63,7 +64,9 @@ const animate = () => {
 	delta = then ? (now - then) / 16.666 : 1;
 	delta = Math.max(delta, 3);
 
+	raf = requestAnimationFrame(animate);
+	
+	if (window.videoShown) return;
 	update(delta);
 	render();
-	raf = requestAnimationFrame(animate);
 }

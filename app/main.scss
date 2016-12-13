@@ -7,12 +7,28 @@ html, body {
 	margin: 0;
 	padding: 0;
 	font-family: 'Arial', sans-serif;
+	background: black;
 }
 
-.pointer {
+.cursor--pointer {
 	cursor: pointer !important;
+}
+
+.cursor--back {
+	cursor: alias !important;
+}
+
+.cursor--drag {
+	cursor: -webkit-grab;
+	cursor: grab;
+}
+
+.cursor--dragging {
+	cursor: -webkit-grabbing;
+	cursor: grabbing;
 }
 
 @import './ui/layouts/_master.scss';
 @import './ui/components/ShopDetails/_shop-details.scss';
 @import './ui/components/VideoOverlay/_video-overlay.scss';
+@import './ui/components/CameraUi/_camera-ui.scss';
