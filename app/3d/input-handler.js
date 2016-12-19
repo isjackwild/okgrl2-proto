@@ -11,6 +11,7 @@ const raycaster = new THREE.Raycaster();
 export const pointerPosition = new THREE.Vector3(0, 0, SHOP_TARGET_DISTANCE);
 export const ray = raycaster.ray;
 const tmpPos = new THREE.Vector3();
+const zeroVec = new THREE.Vector2(0, 0);
 
 
 export const init = () => {
@@ -37,7 +38,7 @@ const onMouseMove = ({ clientX, clientY }) => {
 
 const onDeviceOrientation = ({ clientX, clientY }) => {
 	// mouseVector.set(0, 0, camera.position.z);
-	raycaster.setFromCamera(camera.position, camera);
+	raycaster.setFromCamera(zeroVec, camera);
 	castFocus();
 }
 

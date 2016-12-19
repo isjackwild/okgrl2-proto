@@ -1,7 +1,7 @@
 const THREE = require('three');
 import PubSub from 'pubsub-js';
 
-import { VIDEO_SRC_SD } from './constants.js';
+import { VIDEO_SRC_HD } from './constants.js';
 
 class VideoScreen extends THREE.Object3D {
 	constructor(mesh, pos) {
@@ -21,7 +21,7 @@ class VideoScreen extends THREE.Object3D {
 		this.video = document.createElement('video');
 		this.video.autoplay = true;
 		this.video.muted = true;
-		this.video.src = VIDEO_SRC_SD;
+		this.video.src = VIDEO_SRC_HD;
 
 		this.map = new THREE.Texture(this.video);
 		this.map.minFilter = THREE.NearestFilter;

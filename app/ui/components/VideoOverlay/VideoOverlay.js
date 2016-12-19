@@ -1,6 +1,6 @@
 import React from 'react';
 import PubSub from 'pubsub-js';
-import TweenMax from 'gsap';
+import TweenLite from 'gsap';
 
 import { VIDEO_SRC_HD, VIDEO_SRC_SD } from '../../../3d/constants.js';
 
@@ -10,7 +10,9 @@ const TRANSORM_SPEED_IN = 0.8;
 const view = ({ isVisible, onClick }) => {
 	return (
 		<div className={`video-wrapper video-wrapper--${isVisible ? 'visible' : 'hidden'}`} onClick={onClick}>
-			<div className="video-wrapper__shim"></div>
+			<div className="video-wrapper__shim">
+				<video className="video"></video>
+			</div>
 		</div>
 	);
 };
@@ -31,19 +33,15 @@ const data = Component => class extends React.Component {
 		this.video = undefined;
 	}
 
-	componentWillMount() {
-		this.video = document.createElement('video');
-		this.video.src = window.mobile ? VIDEO_SRC_SD : VIDEO_SRC_HD;
-		this.video.className = 'video';
-	}
-
 	componentDidMount() {
+		this.video = document.getElementsByClassName('video')[0];
+		this.video.src = window.mobile ? VIDEO_SRC_SD : VIDEO_SRC_HD;
 		this.subs.push(PubSub.subscribe('video.show', this.show));
 		this.wrapper = document.getElementsByClassName('video-wrapper')[0];
 		this.shim = document.getElementsByClassName('video-wrapper__shim')[0];
 		this.wrapper.appendChild(this.video);
-		TweenMax.set(this.shim, { opacity: 0 });
-		TweenMax.set(this.video, {
+		TweenLite.set(this.shim, { opacity: 0 });
+		TweenLite.set(this.video, {
 			y: window.innerHeight * -1 - 150,
 			rotation: (Math.random() * 20) - 10,
 			force3D: true
@@ -51,29 +49,34 @@ const data = Component => class extends React.Component {
 	}
 
 	show() {
-		this.setState({ isVisible: true });
-		TweenMax.to(this.shim, TRANSORM_SPEED_IN, { opacity: 1 });
-		TweenMax.to(this.video, TRANSORM_SPEED_IN, {
+		TweenLite.to(this.shim, TRANSORM_SPEED_IN, { opacity: 1 });
+		TweenLite.to(this.video, TRANSORM_SPEED_IN, {
 			y: 0,
 			rotation: 0,
 			ease: Back.easeOut.config(1.9),
 			force3D: true,
-			onComplete: () => { this.video.play(); }
+			onComplete: () => {
+				this.setState({ isVisible: true });
+				this.video.play();
+			}
 		});
 		window.videoShown = true;
 	}
 
 	hide() {
+		if (!this.state.isVisible) return;
 		this.video.pause();
-		this.setState({ isVisible: false });
-		TweenMax.to(this.video, TRANSORM_SPEED_OUT, {
+		TweenLite.to(this.video, TRANSORM_SPEED_OUT, {
 			y: window.innerHeight * -1 - 150,
 			rotation: (Math.random() * 20) - 10,
 			ease: Back.easeIn.config(1.3),
 			force3D: true,
-			onComplete: () => { window.videoShown = false }
+			onComplete: () => {
+				this.setState({ isVisible: false });
+				window.videoShown = false
+			}
 		});
-		TweenMax.to(this.shim, TRANSORM_SPEED_OUT, { opacity: 0 });
+		TweenLite.to(this.shim, TRANSORM_SPEED_OUT, { opacity: 0 });
 		PubSub.publish('video.hide', true);
 	}
 

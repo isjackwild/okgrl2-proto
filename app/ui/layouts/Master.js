@@ -15,12 +15,12 @@ const view = ({ mousePressed, videoShown, targetFocused }) => {
 	return (
 		<main className={`master-layout cursor--${cursor}`}>
 			<ShopDetails />
-			<VideoOverlay />
 			{ window.mobile ?
 				<CameraUi />
 				:
 				null
 			}
+			<VideoOverlay />
 		</main>
 	);
 };

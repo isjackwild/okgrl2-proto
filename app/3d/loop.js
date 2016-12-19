@@ -1,7 +1,7 @@
 const THREE = require('three');
 require('../vendor/StereoEffect.js');
 import { init as initScene, scene, update as updateScene } from './scene.js';
-import { init as initCamera, camera } from './camera.js';
+import { init as initCamera, updatePosition as updateCameraPosition, camera } from './camera.js';
 import { update as updateInputHandler } from './input-handler.js';
 
 
@@ -48,6 +48,7 @@ const setupRenderer = () => {
 const update = (delta) => {
 	updateInputHandler();
 	updateScene(delta);
+	if (!window.mobile) updateCameraPosition(delta);
 }
 
 const render = () => {

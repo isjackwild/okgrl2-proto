@@ -24,11 +24,21 @@ const tmpPos = new THREE.Vector3();
 
 export const init = (geometries, textures) => {
 	const skyboxObj = geometries[0];
-	const tv = geometries[3];
+	const tv = geometries[1];
+	const targetTv = geometries[2];
 	// const targetTV = geometries[1];
-	const targetsShop = [geometries[2]];
-	const targetTv = geometries[1];
-
+	const targetsShop = [
+		geometries[3],
+		geometries[4],
+		geometries[5],
+		geometries[6],
+		geometries[7],
+		geometries[8],
+		geometries[9],
+		geometries[10],
+		geometries[11],
+		geometries[12]
+	];
 
 	// SKYBOX
 	initCamera();
@@ -54,8 +64,17 @@ export const init = (geometries, textures) => {
 		targets.push(shopTarget);
 	});
 
+
+	// TV
+	if (!window.mobile) {
+		tmpPos.copy(tv.position);
+		videoScreen = new VideoScreen(tv.children[0], tmpPos);
+	}
+	
+	// TV TARGET
 	tmpPos.copy(targetTv.position);
 	const onClick = () => {
+		console.log('click tv');
 		PubSub.publish('video.show', true);
 	}
 	const onFocus = () => {
@@ -69,12 +88,6 @@ export const init = (geometries, textures) => {
 	const tvTarget = new ShopTarget({ position: tmpPos, onFocus, onBlur, onClick });
 	targets.push(tvTarget);
 
-	// TV
-	tmpPos.copy(tv.position);
-	videoScreen = new VideoScreen(tv.children[0], tmpPos);
-	
-	// TV TARGET
-	// ...
 
 	// POINTER
 	const geom = new THREE.SphereGeometry(0.5, 20, 20);
@@ -96,7 +109,7 @@ export const init = (geometries, textures) => {
 	targets.forEach((target) => {
 		scene.add(target);
 	});
-	scene.add(videoScreen);
+	if (!window.mobile) scene.add(videoScreen);
 	// scene.add(pointer);
 
 	// geometries.forEach((geo) => {
@@ -114,5 +127,6 @@ export const update = (delta) => {
 	targets.forEach((target) => {
 		target.update(delta);
 	});
-	videoScreen.update();
+	
+	if (videoScreen) videoScreen.update();
 }
