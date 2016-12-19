@@ -10,6 +10,7 @@ const axis = new THREE.Vector3(0, 1, 0);
 const cameraMoveStep = {
 	v: CAMERA_MOVE_STEP,
 }
+let mouseIsDown = false;
 
 
 export const init = () => {
@@ -23,10 +24,12 @@ export const init = () => {
 		0,
 	);
 
-	PubSub.subscribe('target.focus', onTargetFocus);
-	PubSub.subscribe('target.blur', onTargetBlur);
-	// controls.noPan = true;
-	// controls.noZoom = true;
+	PubSub.subscribe('target.focus', easeOutAutoMove);
+	PubSub.subscribe('target.blur', easeInAutoMove);
+	window.addEventListener('mousedown', e => mouseIsDown = true);
+	window.addEventListener('mouseup', e => mouseIsDown = false);
+	controls.noPan = true;
+	controls.noZoom = true;
 
 	window.addEventListener('deviceorientation', setOrientationControls, true);
 }
@@ -39,6 +42,7 @@ export const onResize = () => {
 }
 
 export const updatePosition = (delta) => {
+	if (mouseIsDown) return;
 	camera.position.applyAxisAngle(axis, (cameraMoveStep.v * delta));
 	camera.lookAt(controls.target);
 }
@@ -51,12 +55,12 @@ const setOrientationControls = (e) => {
 	controls.update();
 }
 
-const onTargetFocus = () => {
-	TweenLite.to(cameraMoveStep, 0.5, { v: 0 });
+const easeOutAutoMove = () => {
+	TweenLite.to(cameraMoveStep, 0.8, { v: 0, ease: Sine.easeInOut });
 }
 
-const onTargetBlur = () => {
-	TweenLite.to(cameraMoveStep, 0.5, { v: CAMERA_MOVE_STEP });
+const easeInAutoMove = () => {
+	TweenLite.to(cameraMoveStep, 0.8, { v: CAMERA_MOVE_STEP, ease: Sine.easeInOut });
 }
 
 
