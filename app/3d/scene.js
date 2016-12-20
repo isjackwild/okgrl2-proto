@@ -2,7 +2,7 @@ const THREE = require('three');
 import PubSub from 'pubsub-js';
 
 export let scene;
-import { SKYBOX_RADIUS, SHOP_TARGET_DISTANCE, CAMERA_ORBIT_OFFSET, SPHEREMAP_SRC } from './constants.js';
+import { SKYBOX_RADIUS, CAMERA_ORBIT_OFFSET, SPHEREMAP_SRC } from './constants.js';
 import { init as initCamera, camera, controls } from './camera.js';
 import { init as initSkybox, mesh as skybox } from './skybox.js';
 import { lights } from './lighting.js';

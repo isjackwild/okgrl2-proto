@@ -1,6 +1,5 @@
 import React from 'react';
 import PubSub from 'pubsub-js';
-import ShopDetails from '../components/ShopDetails/ShopDetails.js';
 import VideoOverlay from '../components/VideoOverlay/VideoOverlay.js';
 import CameraUi from '../components/CameraUi/CameraUi.js';
 
@@ -14,7 +13,6 @@ const view = ({ mousePressed, videoShown, targetFocused }) => {
 
 	return (
 		<main className={`master-layout cursor--${cursor}`}>
-			<ShopDetails />
 			{ window.mobile ?
 				<CameraUi />
 				:

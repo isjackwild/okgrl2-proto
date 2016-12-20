@@ -9,11 +9,11 @@ export const CAMERA_FOV = 75;
 export const CAMERA_ORBIT_OFFSET = 0.1;
 export const CAMERA_MOVE_STEP = 0.00066;
 
-export const SHOP_TARGET_RADIUS = mobile ? 3 : 2;
-export const SHOP_TARGET_FOCUS_SCALE = mobile ? 2 : 1.5;
-export const SHOP_HITAREA_RADIUS = SHOP_TARGET_RADIUS * SHOP_TARGET_FOCUS_SCALE;
-export const SHOP_TARGET_MAX_WANDER = mobile ? 9 : 4; // how far the shop target can move from it's rest
-export const SHOP_TARGET_DISTANCE = (SKYBOX_RADIUS - SHOP_TARGET_RADIUS);
+export const TARGET_RADIUS = mobile ? 3 : 2;
+export const TARGET_FOCUS_SCALE = mobile ? 2 : 1.5;
+export const TARGET_HITAREA_RADIUS = TARGET_RADIUS * TARGET_FOCUS_SCALE;
+export const TARGET_MAX_WANDER = mobile ? 9 : 4; // how far the shop target can move from it's rest
+export const TARGET_DISTANCE = (SKYBOX_RADIUS - TARGET_RADIUS);
 
 export const SCALE_DAMPING = 0.9;
 export const SCALE_SPRING = 0.022;

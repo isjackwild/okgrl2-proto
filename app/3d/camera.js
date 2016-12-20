@@ -43,8 +43,8 @@ export const onResize = () => {
 
 export const updatePosition = (delta) => {
 	if (mouseIsDown) return;
-	camera.position.applyAxisAngle(axis, (cameraMoveStep.v * delta));
-	camera.lookAt(controls.target);
+	// camera.position.applyAxisAngle(axis, (cameraMoveStep.v * delta));
+	// camera.lookAt(controls.target);
 }
 
 const setOrientationControls = (e) => {
