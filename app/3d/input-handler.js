@@ -10,6 +10,7 @@ const mouseVector = new THREE.Vector3();
 const raycaster = new THREE.Raycaster();
 export const pointerPosition = new THREE.Vector3(0, 0, TARGET_DISTANCE);
 export const ray = raycaster.ray;
+export const intersectableObjects = [];
 const tmpPos = new THREE.Vector3();
 const zeroVec = new THREE.Vector2(0, 0);
 
@@ -58,8 +59,8 @@ const onClick = ({ clientX, clientY, touches }) => {
 
 const castFocus = () => {
 	let found = false;
-	targets.forEach((target) => {
-		const intersects = raycaster.intersectObject( target, true );
+	intersectableObjects.forEach((target) => {
+		const intersects = raycaster.intersectObject( target.hitArea, false );
 		if (intersects.length) {
 			found = true;
 			target.onFocus();
@@ -72,9 +73,9 @@ const castFocus = () => {
 }
 
 const castClick = () => {
-	targets.forEach((target) => {
-		const intersects = raycaster.intersectObject( target, true );
-		if (intersects.length) return target.onClick();
+	intersectableObjects.forEach((target) => {
+		const intersects = raycaster.intersectObject( target.hitArea, false );
+		if (intersects.length) return target.onClick ? target.onClick() : null;
 	});
 }
 

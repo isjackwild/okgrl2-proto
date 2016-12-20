@@ -2,13 +2,14 @@ const THREE = require('three');
 import PubSub from 'pubsub-js';
 
 export let scene;
-import { SKYBOX_RADIUS, CAMERA_ORBIT_OFFSET, SPHEREMAP_SRC } from './constants.js';
+import { SKYBOX_RADIUS, CAMERA_ORBIT_OFFSET, SPHEREMAP_SRC, TARGET_RADIUS, TARGET_HITAREA_RADIUS, TARGET_FOCUS_SCALE, SCALE_DAMPING, SCALE_SPRING, TARGET_MAX_WANDER } from './constants.js';
 import { init as initCamera, camera, controls } from './camera.js';
 import { init as initSkybox, mesh as skybox } from './skybox.js';
 import { lights } from './lighting.js';
-import ShopTarget from './shop-target.js'
-import VideoScreen from './video-screen.js'
-import { pointerPosition } from './input-handler.js';
+import ShopTarget from './shop-target.js';
+import VideoTarget from './video-target.js';
+import VideoScreen from './video-screen.js';
+import { pointerPosition, intersectableObjects } from './input-handler.js';
 const maxRotation = { x: 1, y: 1 };
 export const targets = [];
 let videoScreen = undefined;
@@ -52,16 +53,17 @@ export const init = (geometries, textures) => {
 			name: 'AWESOME HANDBAG!!!!!!',
 			link: 'http://www.nicopanda.com/',
 		}
-
-		const onFocus = () => {
-			PubSub.publish('shop.show', details);
+		const settings = {
+			radius: TARGET_RADIUS,
+			hitAreaRadius: TARGET_HITAREA_RADIUS,
+			focusScale: TARGET_FOCUS_SCALE,
+			damping: SCALE_DAMPING,
+			spring: SCALE_SPRING,
+			wander: TARGET_MAX_WANDER,
 		}
-		const onBlur = () => {
-			PubSub.publish('shop.hide', false);
-		}
-
-		const shopTarget = new ShopTarget({ position: tmpPos, details, onFocus, onBlur });
+		const shopTarget = new ShopTarget({ position: tmpPos, details, settings });
 		targets.push(shopTarget);
+		intersectableObjects.push(shopTarget);
 	});
 
 
@@ -73,20 +75,17 @@ export const init = (geometries, textures) => {
 	
 	// TV TARGET
 	tmpPos.copy(targetTv.position);
-	const onClick = () => {
-		console.log('click tv');
-		PubSub.publish('video.show', true);
+	const settings = {
+		radius: TARGET_RADIUS,
+		hitAreaRadius: TARGET_HITAREA_RADIUS,
+		focusScale: TARGET_FOCUS_SCALE,
+		damping: SCALE_DAMPING,
+		spring: SCALE_SPRING,
+		wander: TARGET_MAX_WANDER,
 	}
-	const onFocus = () => {
-		if (window.mobile) return;
-		PubSub.publish('video.focus', true);
-	}
-	const onBlur = () => {
-		if (window.mobile) return;
-		PubSub.publish('video.blur', true);
-	}
-	const tvTarget = new ShopTarget({ position: tmpPos, onFocus, onBlur, onClick });
+	const tvTarget = new VideoTarget({ position: tmpPos, settings });
 	targets.push(tvTarget);
+	intersectableObjects.push(tvTarget);
 
 
 	// POINTER

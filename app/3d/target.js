@@ -12,14 +12,7 @@ class Target extends THREE.Object3D {
 
 		this.isFocused = false;
 
-		this.settings = {
-			radius: TARGET_RADIUS,
-			hitAreaRadius: TARGET_HITAREA_RADIUS,
-			focusScale: TARGET_FOCUS_SCALE,
-			damping: SCALE_DAMPING,
-			spring: SCALE_SPRING,
-			wander: TARGET_MAX_WANDER,
-		}
+		this.settings = {};
 
 		this.currentScale = 1;
 		this.targetScale = 1;
@@ -27,6 +20,17 @@ class Target extends THREE.Object3D {
 	}
 
 	init() {
+		if (!this.settings) {
+			this.settings = {
+				radius: TARGET_RADIUS,
+				hitAreaRadius: TARGET_HITAREA_RADIUS,
+				focusScale: TARGET_FOCUS_SCALE,
+				damping: SCALE_DAMPING,
+				spring: SCALE_SPRING,
+				wander: TARGET_MAX_WANDER,
+			}
+		}
+
 		this.targetPosition = new THREE.Vector3().copy(this.position);
 		this.restPosition = new THREE.Vector3().copy(this.position);
 		this.positionVelocity = new THREE.Vector3(0, 0, 0);
@@ -83,7 +87,19 @@ class Target extends THREE.Object3D {
 	}
 
 	update(delta) {
+		this.updatePosition(delta);
+		this.updateScale(delta);
+	}
+
+	updateScale(delta) {
+		this.scaleVelocity += (this.targetScale - this.currentScale) * this.settings.spring * delta;
+		this.currentScale += this.scaleVelocity *= this.settings.damping;
+		this.target.scale.set(this.currentScale, this.currentScale, this.currentScale);
+	}
+
+	updatePosition(delta) {
 		if (this.isFocused) {
+			// const tmpPointerPos = new THREE.Vector3(pointerPosition).setFromMatrixPosition(this.matrixWorld);
 			this.targetPosition
 				.copy(pointerPosition)
 				.normalize()
@@ -100,11 +116,6 @@ class Target extends THREE.Object3D {
 		} else {
 			this.targetPosition.copy(this.restPosition);
 		}
-
-
-		this.scaleVelocity += (this.targetScale - this.currentScale) * this.settings.spring * delta;
-		this.currentScale += this.scaleVelocity *= this.settings.damping;
-		this.target.scale.set(this.currentScale, this.currentScale, this.currentScale);
 
 		this.positionVelocity.add(new THREE.Vector3().copy(this.targetPosition).sub(this.position).multiplyScalar(this.settings.spring).multiplyScalar(delta));
 		this.position.add(this.positionVelocity.multiplyScalar(this.settings.damping));
