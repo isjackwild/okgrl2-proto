@@ -25,7 +25,7 @@ class ShopItem extends Target {
 	}
 
 	hide() {
-		TweenLite.to(this.scale, 0.44, { x: 0, y: 0, z: 0, ease: Back.easeIn.config(2.5) });
+		TweenLite.to(this.scale, 0.44, { x: 0.000001, y: 0.000001, z: 0.000001, ease: Back.easeIn.config(2.5) });
 	}
 
 	onFocus() {

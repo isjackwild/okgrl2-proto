@@ -3,6 +3,8 @@ import PubSub from 'pubsub-js';
 import { TARGET_RADIUS, TARGET_HITAREA_RADIUS, TARGET_FOCUS_SCALE, SCALE_SPRING, SCALE_DAMPING, TARGET_MAX_WANDER } from './constants.js';
 import { pointerPosition } from './input-handler.js';
 
+const tmpVector = new THREE.Vector3();
+
 class Target extends THREE.Object3D {
 	constructor() {
 		super();
@@ -103,8 +105,9 @@ class Target extends THREE.Object3D {
 			this.targetPosition
 				.copy(pointerPosition)
 				.normalize()
-				.multiplyScalar(this.position.length());
-
+				.multiplyScalar(tmpVector.copy(this.position).add(this.parent.position).length())
+				.sub(this.parent.position);
+			
 			this.restToTargetVector
 				.copy(this.targetPosition)
 				.sub(this.restPosition);

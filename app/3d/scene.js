@@ -70,7 +70,7 @@ export const init = (geometries, textures) => {
 	// TV
 	if (!window.mobile) {
 		tmpPos.copy(tv.position);
-		videoScreen = new VideoScreen(tv.children[0], tmpPos);
+		// videoScreen = new VideoScreen(tv.children[0], tmpPos);
 	}
 	
 	// TV TARGET
