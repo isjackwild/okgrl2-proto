@@ -1,7 +1,8 @@
 const THREE = require('three');
 import PubSub from 'pubsub-js';
-import { TARGET_RADIUS, TARGET_HITAREA_RADIUS, TARGET_FOCUS_SCALE, SCALE_SPRING, SCALE_DAMPING, TARGET_MAX_WANDER } from './constants.js';
+import { TARGET_RADIUS, TARGET_HITAREA_RADIUS, TARGET_FOCUS_SCALE, SCALE_SPRING, SCALE_DAMPING, TARGET_MAX_WANDER, BUBBLE_SRC } from './constants.js';
 import { pointerPosition } from './input-handler.js';
+import { textureLoader } from './loader.js';
 
 const tmpVector = new THREE.Vector3();
 
@@ -10,6 +11,7 @@ class Target extends THREE.Object3D {
 		super();
 
 		this.target = undefined;
+		this.targetInner = undefined;
 		this.hitArea = undefined;
 
 		this.isFocused = false;
@@ -41,19 +43,35 @@ class Target extends THREE.Object3D {
 		this.setupTarget();
 		this.setupHitArea();
 
-		this.add(new THREE.AxisHelper(5));
+		// this.add(new THREE.AxisHelper(5));
 		this.lookAt(new THREE.Vector3(0, 0, 0));
 	}
 
 	setupTarget() {
 		const geom = new THREE.PlaneGeometry(this.settings.radius * 2, this.settings.radius * 2);
 		const material = new THREE.MeshStandardMaterial({
-			color: 0xff0000,
+			// color: 0xff0000,
 			metalness: 0,
 			roughness: 0,
-			wireframe: true,
+			// wireframe: true,
+			map: textureLoader.load(BUBBLE_SRC),
+			transparent: true,
 		});
 		this.target = new THREE.Mesh(geom, material);
+
+		const geom2 = new THREE.PlaneGeometry(this.settings.radius * 1.4, this.settings.radius * 1.4);
+		const material2 = new THREE.MeshStandardMaterial({
+			// color: 0xff0000,
+			metalness: 0,
+			roughness: 0,
+			// wireframe: true,
+			map: textureLoader.load(this.mapSrc),
+			transparent: true,
+		});
+		this.targetInner = new THREE.Mesh(geom2, material2);
+		this.targetInner.position.z = 0.001;
+		this.target.add(this.targetInner);
+
 		this.add(this.target);
 		this.scale.set(this.currentScale, this.currentScale, this.currentScale);
 	}
@@ -67,7 +85,7 @@ class Target extends THREE.Object3D {
 			transparent: true,
 			opacity: 0.2,
 		});
-		// material.visible = false;
+		material.visible = false;
 		this.hitArea = new THREE.Mesh(geom, material);
 		this.add(this.hitArea);
 	}

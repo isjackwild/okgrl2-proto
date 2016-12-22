@@ -4,13 +4,14 @@ import Target from './target.js';
 import TweenLite from 'gsap';
 
 class ShopItem extends Target {
-	constructor({ position, settings, link }) {
+	constructor({ position, settings, link, nameMap }) {
 		super();
 
 		this.position.copy(position);
 		this.settings = settings;
 		this.link = link;
 		this.isVisible = false;
+		this.mapSrc = nameMap;
 
 		this.init();
 	}
@@ -21,11 +22,11 @@ class ShopItem extends Target {
 	}
 
 	show() {
-		TweenLite.to(this.scale, 1.4, { x: 1, y: 1, z: 1, ease: Elastic.easeOut.config(0.88, 0.23) });
+		TweenLite.to(this.scale, 1.1, { x: 1, y: 1, z: 1, ease: Elastic.easeOut.config(0.88, 0.23) });
 	}
 
 	hide() {
-		TweenLite.to(this.scale, 0.44, { x: 0.000001, y: 0.000001, z: 0.000001, ease: Back.easeIn.config(2.5) });
+		TweenLite.to(this.scale, 0.35, { x: 0.000001, y: 0.000001, z: 0.000001, ease: Back.easeIn.config(2.5) });
 	}
 
 	onFocus() {

@@ -1,5 +1,6 @@
 const THREE = require('three');
 import PubSub from 'pubsub-js';
+import { ICON_PLUS_SRC } from './constants.js';
 import Target from './target.js';
 
 class VideoTarget extends Target {
@@ -8,6 +9,7 @@ class VideoTarget extends Target {
 
 		this.position.copy(position);
 		this.settings = settings;
+		this.mapSrc = ICON_PLUS_SRC;
 
 		this.init();
 	}

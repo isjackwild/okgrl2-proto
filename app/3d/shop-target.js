@@ -1,7 +1,7 @@
 const THREE = require('three');
 import PubSub from 'pubsub-js';
 import Target from './target.js';
-import { TARGET_RADIUS, TARGET_HITAREA_RADIUS, TARGET_FOCUS_SCALE, SCALE_SPRING, SCALE_DAMPING, TARGET_MAX_WANDER } from './constants.js';
+import { TARGET_RADIUS, TARGET_HITAREA_RADIUS, TARGET_FOCUS_SCALE, SCALE_SPRING, SCALE_DAMPING, TARGET_MAX_WANDER, ICON_PLUS_SRC } from './constants.js';
 import { intersectableObjects } from './input-handler.js';
 import ShopItem from './shop-item.js';
 
@@ -16,6 +16,7 @@ class ShopTarget extends Target {
 		this.itemsTO = undefined;
 		this.shopItems = [];
 		this.index = i;
+		this.mapSrc = ICON_PLUS_SRC;
 
 		this.init();
 	}
@@ -31,12 +32,12 @@ class ShopTarget extends Target {
 		this.items.forEach((details, i) => {
 			const { name, url, nameMap } = details;
 			console.log(name);
-			const position = new THREE.Vector3(10, 0, 0);
-			position.applyAxisAngle(axis, 1 * i);
+			const position = new THREE.Vector3(11, 0, 0);
+			position.applyAxisAngle(axis, 1.18 * i);
 
 			const settings = {
-				radius: TARGET_RADIUS,
-				hitAreaRadius: TARGET_HITAREA_RADIUS,
+				radius: 5.5,
+				hitAreaRadius: 6.5,
 				focusScale: TARGET_FOCUS_SCALE,
 				damping: SCALE_DAMPING,
 				spring: SCALE_SPRING,
