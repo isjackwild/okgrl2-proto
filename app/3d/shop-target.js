@@ -6,15 +6,16 @@ import { intersectableObjects } from './input-handler.js';
 import ShopItem from './shop-item.js';
 
 class ShopTarget extends Target {
-	constructor({ position, details, settings }) {
+	constructor({ position, items, settings, i }) {
 		super();
 
 		this.position.copy(position);
-		this.details = details;
+		this.items = items;
 		this.settings = settings;
 		this.isActivated = false;
 		this.itemsTO = undefined;
-		this.items = [];
+		this.shopItems = [];
+		this.index = i;
 
 		this.init();
 	}
@@ -25,34 +26,39 @@ class ShopTarget extends Target {
 	}
 
 	setupItems() {
-		const position = new THREE.Vector3(10, 0, 0);
-		const settings = {
-			radius: TARGET_RADIUS,
-			hitAreaRadius: TARGET_HITAREA_RADIUS,
-			focusScale: TARGET_FOCUS_SCALE,
-			damping: SCALE_DAMPING,
-			spring: SCALE_SPRING,
-			wander: TARGET_MAX_WANDER,
-		}
-		const item = new ShopItem({ position, settings });
-		this.items.push(item);
+		const axis = new THREE.Vector3(0, 0, 1);
 
-		this.items.forEach((item) => {
+		this.items.forEach((details, i) => {
+			const { name, url, nameMap } = details;
+			console.log(name);
+			const position = new THREE.Vector3(10, 0, 0);
+			position.applyAxisAngle(axis, 1 * i);
+
+			const settings = {
+				radius: TARGET_RADIUS,
+				hitAreaRadius: TARGET_HITAREA_RADIUS,
+				focusScale: TARGET_FOCUS_SCALE,
+				damping: SCALE_DAMPING,
+				spring: SCALE_SPRING,
+				wander: TARGET_MAX_WANDER,
+			}
+			const item = new ShopItem({ position, settings, name, url, nameMap });
+
+			this.shopItems.push(item);
 			item.lookAt(0, 0, 0);
-			this.add(item);
 			intersectableObjects.push(item);
+			this.add(item);
 		});
 	}
 
 	onFocus() {
 		if (this.isFocused) return;
 		super.onFocus();
-		PubSub.publish('shop.show', this.details);
 
 		if (window.mobile) {
 			clearTimeout(this.itemsTO);
 			this.itemsTO = setTimeout(() => {
-				this.items.forEach(item => item.show());
+				this.shopItems.forEach(item => item.show());
 			}, 222);
 		}
 	}
@@ -60,11 +66,10 @@ class ShopTarget extends Target {
 	onBlur() {
 		if (!this.isFocused) return;
 		super.onBlur();
-		PubSub.publish('shop.hide', false);
 
 		if (window.mobile) {
 			clearTimeout(this.itemsTO);
-			this.items.forEach(item => item.hide());
+			this.shopItems.forEach(item => item.hide());
 		}
 	}
 
@@ -73,15 +78,17 @@ class ShopTarget extends Target {
 		this.isActivated = !this.isActivated;
 
 		if (this.isActivated) {
-			this.items.forEach(item => item.show());
+			this.shopItems.forEach(item => item.show());
 		} else {
-			this.items.forEach(item => item.hide());
+			this.shopItems.forEach(item => item.hide());
 		}
+
+		console.log(this.index);
 	}
 
 	update(delta) {
 		super.update(delta);
-		this.items.forEach((item) => {
+		this.shopItems.forEach((item) => {
 			item.update(delta);
 		});
 	}

@@ -3,6 +3,7 @@ import PubSub from 'pubsub-js';
 
 export let scene;
 import { SKYBOX_RADIUS, CAMERA_ORBIT_OFFSET, SPHEREMAP_SRC, TARGET_RADIUS, TARGET_HITAREA_RADIUS, TARGET_FOCUS_SCALE, SCALE_DAMPING, SCALE_SPRING, TARGET_MAX_WANDER } from './constants.js';
+import { SHOP_DETAILS } from './SHOP_DETAILS.js';
 import { init as initCamera, camera, controls } from './camera.js';
 import { init as initSkybox, mesh as skybox } from './skybox.js';
 import { lights } from './lighting.js';
@@ -28,17 +29,19 @@ export const init = (geometries, textures) => {
 	const tv = geometries[1];
 	const targetTv = geometries[2];
 	// const targetTV = geometries[1];
+	
 	const targetsShop = [
-		geometries[3],
-		geometries[4],
-		geometries[5],
-		geometries[6],
-		geometries[7],
-		geometries[8],
-		geometries[9],
-		geometries[10],
 		geometries[11],
+		geometries[10],
+		geometries[9],
+		geometries[8],
+		geometries[6],
+		geometries[5],
+		geometries[3],
 		geometries[12]
+
+		// geometries[4],
+		// geometries[7],
 	];
 
 	// SKYBOX
@@ -47,12 +50,9 @@ export const init = (geometries, textures) => {
 
 
 	// SHOP TARGETS	
-	targetsShop.forEach((target) => {
+	targetsShop.forEach((target, i) => {
 		tmpPos.copy(target.position);
-		const details = {
-			name: 'AWESOME HANDBAG!!!!!!',
-			link: 'http://www.nicopanda.com/',
-		}
+		const items = SHOP_DETAILS[i];
 		const settings = {
 			radius: TARGET_RADIUS,
 			hitAreaRadius: TARGET_HITAREA_RADIUS,
@@ -61,7 +61,7 @@ export const init = (geometries, textures) => {
 			spring: SCALE_SPRING,
 			wander: TARGET_MAX_WANDER,
 		}
-		const shopTarget = new ShopTarget({ position: tmpPos, details, settings });
+		const shopTarget = new ShopTarget({ position: tmpPos, items, settings, i: i + 1 });
 		targets.push(shopTarget);
 		intersectableObjects.push(shopTarget);
 	});
@@ -70,7 +70,7 @@ export const init = (geometries, textures) => {
 	// TV
 	if (!window.mobile) {
 		tmpPos.copy(tv.position);
-		// videoScreen = new VideoScreen(tv.children[0], tmpPos);
+		videoScreen = new VideoScreen(tv.children[0], tmpPos);
 	}
 	
 	// TV TARGET
@@ -109,13 +109,6 @@ export const init = (geometries, textures) => {
 		scene.add(target);
 	});
 	if (!window.mobile) scene.add(videoScreen);
-	// scene.add(pointer);
-
-	// geometries.forEach((geo) => {
-	// 	scene.add(geo);
-	// });
-
-	// scene.add(tv);
 }
 
 
