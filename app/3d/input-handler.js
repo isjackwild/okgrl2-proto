@@ -45,7 +45,9 @@ const onDeviceOrientation = ({ clientX, clientY }) => {
 
 const onClick = ({ clientX, clientY, touches }) => {
 	let x, y;
+	console.log('click');
 	if (touches) {
+		console.log(touches[0]);
 		x = 2 * (touches[0].clientX / window.innerWidth) - 1;
 		y = 1 - 2 * (touches[0].clientY / window.innerHeight);
 	} else {

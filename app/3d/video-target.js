@@ -10,6 +10,7 @@ class VideoTarget extends Target {
 		this.position.copy(position);
 		this.settings = settings;
 		this.mapSrc = ICON_PLUS_SRC;
+		this.type = 'video';
 
 		this.init();
 	}

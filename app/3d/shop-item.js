@@ -3,15 +3,29 @@ import PubSub from 'pubsub-js';
 import Target from './target.js';
 import TweenLite from 'gsap';
 
+const openLinkIOS = (url) => {
+	const a = document.createElement("a");
+	a.target = "_blank";
+	a.href = url;
+
+	console.log(url);
+
+	const e = window.document.createEvent("MouseEvents");
+	e.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+	a.dispatchEvent(e);
+}
+
 class ShopItem extends Target {
-	constructor({ position, settings, link, nameMap }) {
+	constructor({ position, settings, url, nameMap, i }) {
 		super();
 
 		this.position.copy(position);
 		this.settings = settings;
-		this.link = link;
+		this.url = url;
 		this.isVisible = false;
 		this.mapSrc = nameMap;
+		this.type = 'item';
+		this.index = i;
 
 		this.init();
 	}
@@ -22,11 +36,23 @@ class ShopItem extends Target {
 	}
 
 	show() {
-		TweenLite.to(this.scale, 1.1, { x: 1, y: 1, z: 1, ease: Elastic.easeOut.config(0.88, 0.23) });
+		TweenLite.to(this.scale, 1.4, {
+			x: 1,
+			y: 1,
+			z: 1,
+			ease: Elastic.easeOut.config(0.5, 0.2),
+			delay: this.index * 0.13,
+		});
 	}
 
 	hide() {
-		TweenLite.to(this.scale, 0.35, { x: 0.000001, y: 0.000001, z: 0.000001, ease: Back.easeIn.config(2.5) });
+		TweenLite.to(this.scale, 0.33, {
+			x: 0.000001,
+			y: 0.000001,
+			z: 0.000001,
+			ease: Back.easeIn.config(2.7),
+			delay: this.index * 0.13,
+		});
 	}
 
 	onFocus() {
@@ -40,7 +66,12 @@ class ShopItem extends Target {
 	}
 
 	onClick() {
-		console.log('on CLICK shop item');
+		if (window.mobile) {
+			openLinkIOS(this.url);
+		} else {
+			const win = window.open(this.url, '_blank');
+			win.focus();
+		}
 	}
 }
 

@@ -13,20 +13,63 @@
 	transform: translate(-50%, -50%);
 	width: 60px;
 	height: 60px;
-	border: 1px solid yellow;
+	border: 1px solid #ffd400;
 	pointer-events: none;
 }
+
+.camera-ui__viewfinder-inner {
+	position: absolute;
+	background: #ffd400;
+	display: inline-block;
+}
+
+.camera-ui__viewfinder-inner--top, .camera-ui__viewfinder-inner--bottom {
+	width: 1px;
+	height: 5px;
+	left: 50%;
+}
+
+.camera-ui__viewfinder-inner--left, .camera-ui__viewfinder-inner--right {
+	width: 5px;
+	height: 1px;
+	top: 50%;
+}
+
+.camera-ui__viewfinder-inner--top {
+	top: 0;
+}
+
+.camera-ui__viewfinder-inner--bottom {
+	bottom: 0;
+}
+
+.camera-ui__viewfinder-inner--left {
+	left: 0;
+}
+
+.camera-ui__viewfinder-inner--right {
+	right: 0;
+}
+
 
 .camera-ui__trigger {
 	position: absolute;
 	right: 15px;
 	top: 50%;
 	transform: translateY(-50%);
-	width: 44px;
-	height: 44px;
+	width: 50px;
+	height: 50px;
 	background: white;
 	border: 4px solid black;
-	border-radius: 22px;
+	border-radius: 25px;
+	
+	@media screen and (orientation: portrait) {
+		top: initial;
+		bottom: 15px;
+		left: 50%;
+		right: initial;
+		transform: translateX(-50%);
+	}
 }
 
 .camera-ui__flash {

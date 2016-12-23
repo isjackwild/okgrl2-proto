@@ -80,7 +80,9 @@ const CameraUi = ({ isVisible, name, link }) => {
 		// 	force3D: true,
 		// 	onComplete: reset,
 		// });
-
+		const portrait = window.innerHeight > window.innerWidth ? true : false;
+		const toX = window.innerWidth / 2 - 25;
+		const toY = portrait ? window.innerHeight / 2 - 35 : window.innerHeight / -2 + 25;
 
 		const tl = new TimelineLite();
 		tl.to(flash, 0.15, {
@@ -92,8 +94,8 @@ const CameraUi = ({ isVisible, name, link }) => {
 			scaleX: 0.05,
 			scaleY: 0.05,
 			rotation: -33,
-			x: window.innerWidth / 2 - 25,
-			y: window.innerHeight / -2 + 25,
+			x: toX,
+			y: toY,
 			force3D: true,
 			ease: Circ.easeOut,
 		}, 0.22).to(canvas, 0.2, {
@@ -114,7 +116,12 @@ const CameraUi = ({ isVisible, name, link }) => {
 
 	return (
 		<div className="camera-ui">
-			<div className="camera-ui__viewfinder"></div>
+			<div className="camera-ui__viewfinder">
+				<div className="camera-ui__viewfinder-inner camera-ui__viewfinder-inner--top"></div>
+				<div className="camera-ui__viewfinder-inner camera-ui__viewfinder-inner--bottom"></div>
+				<div className="camera-ui__viewfinder-inner camera-ui__viewfinder-inner--left"></div>
+				<div className="camera-ui__viewfinder-inner camera-ui__viewfinder-inner--right"></div>
+			</div>
 			<div className="camera-ui__trigger" onClick={takePhoto.bind(this)}></div>
 			<div className="camera-ui__flash"></div>
 		</div>

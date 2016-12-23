@@ -50,26 +50,27 @@ class Target extends THREE.Object3D {
 	setupTarget() {
 		const geom = new THREE.PlaneGeometry(this.settings.radius * 2, this.settings.radius * 2);
 		const material = new THREE.MeshStandardMaterial({
-			// color: 0xff0000,
 			metalness: 0,
 			roughness: 0,
-			// wireframe: true,
 			map: textureLoader.load(BUBBLE_SRC),
 			transparent: true,
+			depthTest: false,
 		});
 		this.target = new THREE.Mesh(geom, material);
+		this.target.renderOrder = 1;
 
-		const geom2 = new THREE.PlaneGeometry(this.settings.radius * 1.4, this.settings.radius * 1.4);
+		const scale = this.type === 'item' ? 1.4 : 1;
+		const geom2 = new THREE.PlaneGeometry(this.settings.radius * scale, this.settings.radius * scale);
 		const material2 = new THREE.MeshStandardMaterial({
-			// color: 0xff0000,
 			metalness: 0,
 			roughness: 0,
-			// wireframe: true,
 			map: textureLoader.load(this.mapSrc),
 			transparent: true,
+			depthTest: false,
 		});
 		this.targetInner = new THREE.Mesh(geom2, material2);
-		this.targetInner.position.z = 0.001;
+		this.targetInner.renderOrder = 2;
+		this.targetInner.position.z = 0.005;
 		this.target.add(this.targetInner);
 
 		this.add(this.target);
@@ -96,6 +97,9 @@ class Target extends THREE.Object3D {
 		this.targetScale = this.settings.focusScale;
 		this.targetPosition.copy(pointerPosition);
 		PubSub.publish('target.focus', true);
+		this.renderOrder = 10;
+		this.target.renderOrder = 11;
+		this.targetInner.renderOrder = 12;
 	}
 
 	onBlur() {
@@ -104,6 +108,9 @@ class Target extends THREE.Object3D {
 		this.targetScale = 1;
 		this.targetPosition.copy(this.restPosition);
 		PubSub.publish('target.blur', true);
+		this.renderOrder = 0;
+		this.target.renderOrder = 1;
+		this.targetInner.renderOrder = 2;
 	}
 
 	update(delta) {
