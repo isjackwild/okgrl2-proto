@@ -10,9 +10,12 @@ const TRANSORM_SPEED_IN = 0.8;
 const view = ({ isVisible, onClick }) => {
 	return (
 		<div className={`video-wrapper video-wrapper--${isVisible ? 'visible' : 'hidden'}`} onClick={onClick}>
-			<div className="video-wrapper__shim">
-				<video className="video"></video>
+			<div className="video-wrapper__shim"></div>
+			
+			<div className="video-wrapper__frame">
+				<video className="video" onClick={ e => e.stopPropagation() }></video>
 			</div>
+
 		</div>
 	);
 };
@@ -31,17 +34,19 @@ const data = Component => class extends React.Component {
 		this.wrapper = undefined;
 		this.shim = undefined;
 		this.video = undefined;
+		this.frame = undefined;
 	}
 
 	componentDidMount() {
+		this.frame = document.getElementsByClassName('video-wrapper__frame')[0];
 		this.video = document.getElementsByClassName('video')[0];
 		this.video.src = window.mobile ? VIDEO_SRC_SD : VIDEO_SRC_HD;
+		if (window.mobile) this.video.controls = true;
 		this.subs.push(PubSub.subscribe('video.show', this.show));
 		this.wrapper = document.getElementsByClassName('video-wrapper')[0];
 		this.shim = document.getElementsByClassName('video-wrapper__shim')[0];
-		this.wrapper.appendChild(this.video);
 		TweenLite.set(this.shim, { opacity: 0 });
-		TweenLite.set(this.video, {
+		TweenLite.set(this.frame, {
 			y: window.innerHeight * -1 - 150,
 			rotation: (Math.random() * 20) - 10,
 			force3D: true
@@ -50,14 +55,14 @@ const data = Component => class extends React.Component {
 
 	show() {
 		TweenLite.to(this.shim, TRANSORM_SPEED_IN, { opacity: 1 });
-		TweenLite.to(this.video, TRANSORM_SPEED_IN, {
+		TweenLite.to(this.frame, TRANSORM_SPEED_IN, {
 			y: 0,
 			rotation: 0,
 			ease: Back.easeOut.config(1.9),
 			force3D: true,
 			onComplete: () => {
 				this.setState({ isVisible: true });
-				this.video.play();
+				if (!window.mobile) this.video.play();
 			}
 		});
 		window.videoShown = true;
@@ -66,7 +71,7 @@ const data = Component => class extends React.Component {
 	hide() {
 		if (!this.state.isVisible) return;
 		this.video.pause();
-		TweenLite.to(this.video, TRANSORM_SPEED_OUT, {
+		TweenLite.to(this.frame, TRANSORM_SPEED_OUT, {
 			y: window.innerHeight * -1 - 150,
 			rotation: (Math.random() * 20) - 10,
 			ease: Back.easeIn.config(1.3),

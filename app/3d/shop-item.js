@@ -3,17 +3,17 @@ import PubSub from 'pubsub-js';
 import Target from './target.js';
 import TweenLite from 'gsap';
 
-const openLinkIOS = (url) => {
-	const a = document.createElement("a");
-	a.target = "_blank";
-	a.href = url;
+// const openLinkIOS = (url) => {
+// 	const a = document.createElement("a");
+// 	a.target = "_blank";
+// 	a.href = url;
 
-	console.log(url);
+// 	console.log(url);
 
-	const e = window.document.createEvent("MouseEvents");
-	e.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-	a.dispatchEvent(e);
-}
+// 	const e = window.document.createEvent("MouseEvents");
+// 	e.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+// 	a.dispatchEvent(e);
+// }
 
 class ShopItem extends Target {
 	constructor({ position, settings, url, nameMap, i }) {
@@ -43,6 +43,7 @@ class ShopItem extends Target {
 			ease: Elastic.easeOut.config(0.5, 0.2),
 			delay: this.index * 0.13,
 		});
+		this.bringToFront();
 	}
 
 	hide() {
@@ -53,6 +54,7 @@ class ShopItem extends Target {
 			ease: Back.easeIn.config(2.7),
 			delay: this.index * 0.13,
 		});
+		this.resetRenderOrder();
 	}
 
 	onFocus() {
@@ -67,7 +69,8 @@ class ShopItem extends Target {
 
 	onClick() {
 		if (window.mobile) {
-			openLinkIOS(this.url);
+			// openLinkIOS(this.url);
+			window.location.href = this.url;
 		} else {
 			const win = window.open(this.url, '_blank');
 			win.focus();

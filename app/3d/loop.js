@@ -28,7 +28,8 @@ export const onResize = () => {
 }
 
 export const onFocus = () => {
-	then = now = new Date().getTime();
+	then = null;
+	now = new Date().getTime();
 }
 
 const setupRenderer = () => {
@@ -62,11 +63,10 @@ const animate = () => {
 	then = now ? now : null;
 	now = new Date().getTime();
 	delta = then ? (now - then) / 16.666 : 1;
-	delta = Math.max(delta, 3);
+	delta = Math.min(delta, 2.8);
 
 	raf = requestAnimationFrame(animate);
 	
-	if (window.videoShown) return;
 	update(delta);
 	render();
 }

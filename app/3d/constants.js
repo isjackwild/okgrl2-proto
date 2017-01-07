@@ -22,6 +22,7 @@ export const SPHEREMAP_SRC = 'assets/maps/Nicopanda_360_V03-low.jpg';
 export const BUBBLE_SRC = 'assets/maps/bubbles/BUBBLE-all.png';
 export const ICON_LINK_SRC = 'assets/maps/bubbles/Icon-LINK.png';
 export const ICON_PLUS_SRC = 'assets/maps/bubbles/Icon-PLUS.png';
+export const ICON_PLAY_SRC = 'assets/maps/bubbles/Icon-PLUS.png';
 export const VIDEO_SRC_SD = 'https://player.vimeo.com/external/133547147.hd.mp4?s=d3e74a3b47091a3002de13d49b32b91a&profile_id=119';
 export const VIDEO_SRC_HD = 'assets/maps/nicopanda-low.mp4';
 export const GEOM_SRC = 'assets/geom/Nicopanda-objects3.dae';

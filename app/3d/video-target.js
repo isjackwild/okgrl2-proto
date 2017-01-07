@@ -1,6 +1,6 @@
 const THREE = require('three');
 import PubSub from 'pubsub-js';
-import { ICON_PLUS_SRC } from './constants.js';
+import { ICON_PLAY_SRC } from './constants.js';
 import Target from './target.js';
 
 class VideoTarget extends Target {
@@ -9,7 +9,7 @@ class VideoTarget extends Target {
 
 		this.position.copy(position);
 		this.settings = settings;
-		this.mapSrc = ICON_PLUS_SRC;
+		this.mapSrc = ICON_PLAY_SRC;
 		this.type = 'video';
 
 		this.init();
@@ -17,12 +17,12 @@ class VideoTarget extends Target {
 
 	onFocus() {
 		super.onFocus();
-		PubSub.publish('video.focus', true);
+		// if (!window.mobile) PubSub.publish('video.focus', true);
 	}
 
 	onBlur() {
 		super.onBlur();
-		PubSub.publish('video.blur', true);
+		// if (!window.mobile) PubSub.publish('video.blur', true);
 	}
 
 	onClick() {

@@ -3,6 +3,7 @@ import PubSub from 'pubsub-js';
 import { TARGET_RADIUS, TARGET_HITAREA_RADIUS, TARGET_FOCUS_SCALE, SCALE_SPRING, SCALE_DAMPING, TARGET_MAX_WANDER, BUBBLE_SRC } from './constants.js';
 import { pointerPosition } from './input-handler.js';
 import { textureLoader } from './loader.js';
+import { renderer } from './loop.js';
 
 const tmpVector = new THREE.Vector3();
 
@@ -97,9 +98,7 @@ class Target extends THREE.Object3D {
 		this.targetScale = this.settings.focusScale;
 		this.targetPosition.copy(pointerPosition);
 		PubSub.publish('target.focus', true);
-		this.renderOrder = 10;
-		this.target.renderOrder = 11;
-		this.targetInner.renderOrder = 12;
+		this.bringToFront();
 	}
 
 	onBlur() {
@@ -108,6 +107,18 @@ class Target extends THREE.Object3D {
 		this.targetScale = 1;
 		this.targetPosition.copy(this.restPosition);
 		PubSub.publish('target.blur', true);
+		this.resetRenderOrder();
+	}
+
+	bringToFront() {
+		renderer.clearDepth();
+		this.renderOrder = 10;
+		this.target.renderOrder = 11;
+		this.targetInner.renderOrder = 12;
+	}
+
+	resetRenderOrder() {
+		renderer.clearDepth();
 		this.renderOrder = 0;
 		this.target.renderOrder = 1;
 		this.targetInner.renderOrder = 2;

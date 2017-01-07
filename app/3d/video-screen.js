@@ -2,6 +2,7 @@ const THREE = require('three');
 import PubSub from 'pubsub-js';
 
 import { VIDEO_SRC_HD } from './constants.js';
+import { camera } from './camera.js';
 
 class VideoScreen extends THREE.Object3D {
 	constructor(mesh, pos) {
