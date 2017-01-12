@@ -15,6 +15,11 @@ class VideoTarget extends Target {
 		this.init();
 	}
 
+	setupTarget() {
+		super.setupTarget();
+		this.targetInner.position.x = 0.4;
+	}
+
 	onFocus() {
 		super.onFocus();
 		// if (!window.mobile) PubSub.publish('video.focus', true);

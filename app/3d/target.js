@@ -60,7 +60,7 @@ class Target extends THREE.Object3D {
 		this.target = new THREE.Mesh(geom, material);
 		this.target.renderOrder = 1;
 
-		const scale = this.type === 'item' ? 1.4 : 1;
+		const scale = this.type === 'item' ? 1.6 : 1;
 		const geom2 = new THREE.PlaneGeometry(this.settings.radius * scale, this.settings.radius * scale);
 		const material2 = new THREE.MeshStandardMaterial({
 			metalness: 0,

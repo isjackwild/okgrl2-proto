@@ -48,6 +48,9 @@ const onLoadedAll = () => {
 	initLoop();
 	initInput();
 	initUI();
+	setTimeout(() => {
+		document.getElementsByClassName('loader')[0].classList.add('loader--loaded');
+	}, 555);
 }
 
 const initUI = () => {

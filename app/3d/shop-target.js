@@ -31,7 +31,7 @@ class ShopTarget extends Target {
 	setupItems() {
 		const step = window.mobile ? 1.3 : 1.22;
 		const axis = new THREE.Vector3(0, 0, 1);
-		const position = new THREE.Vector3((window.mobile ? 20 : 11), 0, 0);
+		const position = new THREE.Vector3((window.mobile ? 18 : 9), 0, 0);
 		if (this.items.length === 1) position.applyAxisAngle(axis, step * 0.5);
 		if (this.items.length === 3) position.applyAxisAngle(axis, step * -0.5);
 
@@ -40,8 +40,8 @@ class ShopTarget extends Target {
 			console.log(name);
 
 			const settings = {
-				radius: window.mobile ? 11 : 5.8,
-				hitAreaRadius: window.mobile ? 12 : 6.5,
+				radius: window.mobile ? 8 : 5,
+				hitAreaRadius: window.mobile ? 10 : 6,
 				focusScale: TARGET_FOCUS_SCALE,
 				damping: SCALE_DAMPING,
 				spring: SCALE_SPRING,

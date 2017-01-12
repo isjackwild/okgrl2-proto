@@ -28,6 +28,37 @@ html, body {
 	cursor: grabbing;
 }
 
+.okgrl-logo-mini {
+	top: 0;
+	left: 0;
+}
+
+.loader {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 50px;
+	transition: opacity 0.22s ease;
+	z-index: 1111;
+}
+
+.loader--loaded {
+	pointer-events: none;
+	opacity: 0;
+}
+
+.loader__image {
+	max-width: 90%;
+	width: auto;
+	height: auto;
+}
+
 @import './ui/layouts/_master.scss';
 @import './ui/components/VideoOverlay/_video-overlay.scss';
 @import './ui/components/CameraUi/_camera-ui.scss';
