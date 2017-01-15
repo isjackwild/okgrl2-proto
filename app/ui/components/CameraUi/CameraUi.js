@@ -4,82 +4,27 @@ import PubSub from 'pubsub-js';
 import TweenLite from 'gsap';
 import { renderer } from '../../../3d/loop.js';
 
+let tween;
+
+const onTargetFocus = () => {
+	if (tween) tween.kill();
+	const viewfinder = document.getElementsByClassName('camera-ui__viewfinder')[0];
+	tween = TweenLite.to(viewfinder, 0.55, {scaleX: 0.6, scaleY: 0.6, ease: Back.easeOut.config(3.5)});
+}
+
+const onTargetBlur = () => {
+	if (tween) tween.kill();
+	const viewfinder = document.getElementsByClassName('camera-ui__viewfinder')[0];
+	tween = TweenLite.to(viewfinder, 0.55, {scaleX: 1, scaleY: 1, ease: Back.easeOut.config(3.5)});
+}
+PubSub.subscribe('viewfinder.focus', onTargetFocus);
+PubSub.subscribe('viewfinder.blur', onTargetBlur);
+
 const CameraUi = ({ isVisible, name, link }) => {
 	const takePhoto = () => {
 		const canvas = document.getElementsByClassName('canvas')[0];
 		const flash = document.getElementsByClassName('camera-ui__flash')[0];
-		// const wrapper = document.getElementsByClassName('camera-ui')[0];
-		// const newCanvas = document.createElement('canvas');
-		// newCanvas.className = 'camera-ui__photo';
-		
-		// const ctx = newCanvas.getContext('2d');
-		// ctx.drawImage(canvas, 0, 0);
-	
-		// const src = renderer.domElement.toDataURL("image/jpeg");
-		// const image = new Image();
-		// image.src = src;
-		// image.className = 'camera-ui__photo';
-		// image.onload = () => {
-		// 	wrapper.appendChild(image);
 
-		// 	TweenLite.to(image, 1, {
-		// 		scaleX: 0.05,
-		// 		scaleY: 0.05,
-		// 		rotation: -23,
-		// 		x: window.innerWidth / 2 - 25,
-		// 		y: window.innerHeight / -2 + 25,
-		// 		force3D: true,
-		// 		// onComplete: () => wrapper.removeChild(image),
-		// 	});
-		// }
-		// 
-		
-		// const reset = () => {
-		// 	TweenLite.set(canvas, {
-		// 		scaleX: 1,
-		// 		scaleY: 1,
-		// 		rotation: 0,
-		// 		x: 0,
-		// 		y: 0,
-		// 	});
-		// }
-
-		// console.log(flash, canvas);
-
-		// const tl = new TimelineLite();
-		// tl.to(flash, 0.1, {
-		// 	opacity: 1,
-		// }).to(flash, 0.7, {
-		// 	opacity: 0,
-		// }).to(canvas, 0.7, {
-		// 	scaleX: 0.05,
-		// 	scaleY: 0.05,
-		// 	rotation: -23,
-		// 	x: window.innerWidth / 2 - 25,
-		// 	y: window.innerHeight / -2 + 25,
-		// 	force3D: true,
-		// 	// onComplete: reset,
-		// }); 
-		// WHY IS THIS SAYING CANNOT TWEEN NULL TARGET?
-		
-		// TweenLite.to(flash, 0.15, {
-		// 	opacity: 1,
-		// });
-
-		// TweenLite.to(flash, 1, {
-		// 	opacity: 0,
-		// 	delay: 0.15,
-		// });
-
-		// TweenLite.to(canvas, 0.66, {
-		// 	scaleX: 0.05,
-		// 	scaleY: 0.05,
-		// 	rotation: -23,
-		// 	x: window.innerWidth / 2 - 25,
-		// 	y: window.innerHeight / -2 + 25,
-		// 	force3D: true,
-		// 	onComplete: reset,
-		// });
 		const portrait = window.innerHeight > window.innerWidth ? true : false;
 		const toX = window.innerWidth / 2 - 25;
 		const toY = portrait ? window.innerHeight / 2 - 35 : window.innerHeight / -2 + 25;
@@ -114,15 +59,17 @@ const CameraUi = ({ isVisible, name, link }) => {
 		});
 	};
 
+
 	return (
 		<div className="camera-ui">
 			<div className="camera-ui__viewfinder">
-				<div className="camera-ui__viewfinder-inner camera-ui__viewfinder-inner--top"></div>
-				<div className="camera-ui__viewfinder-inner camera-ui__viewfinder-inner--bottom"></div>
-				<div className="camera-ui__viewfinder-inner camera-ui__viewfinder-inner--left"></div>
-				<div className="camera-ui__viewfinder-inner camera-ui__viewfinder-inner--right"></div>
 			</div>
-			<div className="camera-ui__trigger" onClick={takePhoto.bind(this)}></div>
+			<div
+				className="camera-ui__trigger"
+				onClick={takePhoto.bind(this)}
+				onTouchStart={e => e.currentTarget.classList.add('camera-ui__trigger--touched')}
+				onTouchEnd={e => e.currentTarget.classList.remove('camera-ui__trigger--touched')}
+			></div>
 			<div className="camera-ui__flash"></div>
 		</div>
 	);

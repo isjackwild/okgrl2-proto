@@ -37,7 +37,6 @@ class ShopTarget extends Target {
 
 		this.items.forEach((details, i) => {
 			const { name, url, nameMap } = details;
-			console.log(name);
 
 			const settings = {
 				radius: window.mobile ? 8 : 5,
@@ -71,6 +70,7 @@ class ShopTarget extends Target {
 		// }
 
 		if (window.mobile) this.activate(true);
+		PubSub.publish('viewfinder.focus');
 	}
 
 	onBlur() {
@@ -78,6 +78,7 @@ class ShopTarget extends Target {
 		super.onBlur();
 
 		if (window.mobile) this.activate(false);
+		PubSub.publish('viewfinder.blur');
 	}
 
 	onClick() {

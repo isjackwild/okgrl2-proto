@@ -44,7 +44,7 @@ export const init = (geometries, textures) => {
 		// geometries[7],
 	];
 
-	console.log(geometries);
+	// console.log(geometries);
 
 	// SKYBOX
 	initCamera();

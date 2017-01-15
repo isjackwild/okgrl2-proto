@@ -19,7 +19,6 @@ const view = ({ mousePressed, videoShown, targetFocused }) => {
 				null
 			}
 			<VideoOverlay />
-			<a href="/" class="okgrl-logo-mini logo"></a>
 		</main>
 	);
 };

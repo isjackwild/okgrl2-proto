@@ -13,7 +13,11 @@ const view = ({ isVisible, onClick }) => {
 			<div className="video-wrapper__shim"></div>
 			
 			<div className="video-wrapper__frame">
-				<video className="video" onClick={ e => e.stopPropagation() }></video>
+				<video
+					className="video"
+					poster="/assets/images/TV-poster.jpg"
+					onClick={ e => e.stopPropagation() }
+				></video>
 			</div>
 
 		</div>

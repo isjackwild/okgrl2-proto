@@ -32,7 +32,7 @@ class ShopItem extends Target {
 
 	init() {
 		super.init();
-		this.scale.set(0, 0, 0);
+		this.scale.set(0.0001, 0.0001, 0.0001);
 	}
 
 	show() {
