@@ -36,7 +36,7 @@ class ShopItem extends Target {
 	}
 
 	show() {
-		TweenLite.to(this.scale, 1.4, {
+		TweenLite.to(this.scale, 1.6, {
 			x: 1,
 			y: 1,
 			z: 1,
@@ -47,7 +47,7 @@ class ShopItem extends Target {
 	}
 
 	hide() {
-		TweenLite.to(this.scale, 0.33, {
+		TweenLite.to(this.scale, 0.5, {
 			x: 0.000001,
 			y: 0.000001,
 			z: 0.000001,

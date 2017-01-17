@@ -31,7 +31,7 @@ class ShopTarget extends Target {
 	setupItems() {
 		const step = window.mobile ? 1.3 : 1.22;
 		const axis = new THREE.Vector3(0, 0, 1);
-		const position = new THREE.Vector3((window.mobile ? 18 : 9), 0, 0);
+		const position = new THREE.Vector3((window.mobile ? 16 : 9), 0, 0);
 		if (this.items.length === 1) position.applyAxisAngle(axis, step * 0.5);
 		if (this.items.length === 3) position.applyAxisAngle(axis, step * -0.5);
 
@@ -90,15 +90,15 @@ class ShopTarget extends Target {
 
 		if (this.isActivated) {
 			this.shopItems.forEach(item => item.show());
-			TweenLite.to(this.target.children[0].rotation, 0.33, {
-				z: Math.PI / 4,
-				ease: Back.easeOut.config(2.5),
+			TweenLite.to(this.target.children[0].rotation, 0.66, {
+				z: Math.PI * 2,
+				ease: Back.easeOut.config(1.66),
 			});
 		} else {
 			this.shopItems.forEach(item => item.hide());
-			TweenLite.to(this.target.children[0].rotation, 0.33, {
+			TweenLite.to(this.target.children[0].rotation, 0.66, {
 				z: 0,
-				ease: Back.easeOut.config(2.5),
+				ease: Back.easeOut.config(1.66),
 			});
 		}
 	}

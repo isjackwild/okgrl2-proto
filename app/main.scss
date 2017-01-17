@@ -33,6 +33,10 @@ html, body {
 	left: 0;
 }
 
+.is-vr .okgrl-logo-mini {
+	display: none;
+}
+
 .loader {
 	position: fixed;
 	top: 0;
@@ -57,6 +61,16 @@ html, body {
 	max-width: 90%;
 	width: auto;
 	height: auto;
+}
+
+
+.vr-toggle {
+	position: absolute;
+	bottom: 20px;
+	left: 20px;
+	width: 30px;
+	height: 30px;
+	background: blue;
 }
 
 @import './ui/layouts/_master.scss';

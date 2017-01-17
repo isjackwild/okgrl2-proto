@@ -3,7 +3,7 @@ import PubSub from 'pubsub-js';
 import VideoOverlay from '../components/VideoOverlay/VideoOverlay.js';
 import CameraUi from '../components/CameraUi/CameraUi.js';
 
-const view = ({ mousePressed, videoShown, targetFocused }) => {
+const view = ({ mousePressed, videoShown, targetFocused, isVR, toggleVr }) => {
 	const cursor = (() => {
 		if (videoShown) return 'back';
 		if (targetFocused) return 'pointer';
@@ -14,11 +14,20 @@ const view = ({ mousePressed, videoShown, targetFocused }) => {
 	return (
 		<main className={`master-layout cursor--${cursor}`}>
 			{ window.mobile ?
-				<CameraUi />
+				<CameraUi isVR={isVR}/>
 				:
 				null
 			}
-			<VideoOverlay />
+			{ !isVR ?
+				<VideoOverlay />
+				:
+				null
+			}
+			{ window.mobile ?
+				<div className="vr-toggle" onClick={toggleVr}></div>
+				:
+				null
+			}
 		</main>
 	);
 };
@@ -31,8 +40,10 @@ const data = Component => class extends React.Component {
 			mousePressed: false,
 			videoShown: false,
 			targetFocused: false,
+			isVR: false,
 		}
 		this.subs = [];
+		this.toggleVr = this.toggleVr.bind(this);
 	}
 
 	componentDidMount() {
@@ -45,8 +56,15 @@ const data = Component => class extends React.Component {
 		window.addEventListener('mouseup', e => this.setState({ mousePressed: false }));
 	}
 
+	toggleVr() {
+		window.isVR = !this.state.isVR;
+		this.setState({ isVR: !this.state.isVR });
+		PubSub.publish('vr.toggle', !this.state.isVR);
+		document.body.classList.toggle('is-vr');
+	}
+
 	render() {
-		return <Component {...this.state} {...this.props}/>
+		return <Component {...this.state} {...this.props} toggleVr={this.toggleVr}/>
 	}
 };
 

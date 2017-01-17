@@ -85,9 +85,9 @@ class Target extends THREE.Object3D {
 			metalness: 0,
 			roughness: 0,
 			transparent: true,
-			opacity: 0.2,
+			opacity: 0,
 		});
-		material.visible = false;
+		// material.visible = false;
 		this.hitArea = new THREE.Mesh(geom, material);
 		this.add(this.hitArea);
 	}

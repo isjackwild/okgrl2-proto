@@ -1,4 +1,5 @@
 import React from 'react';
+import PubSub from 'pubsub-js';
 import { render } from 'react-dom';
 import _ from 'lodash';
 import MobileDetect from 'mobile-detect';
@@ -21,7 +22,7 @@ const kickIt = () => {
 	const md = new MobileDetect(window.navigator.userAgent);
 	window.mobile = md.mobile() ? true : false;
 	if (window.mobile) document.body.classList.add('mobile');
-
+	PubSub.subscribe('vr.toggle', onResize);
 	addEventListeners();
 	load();
 }
@@ -62,6 +63,7 @@ const initUI = () => {
 const onResize = () => {
 	onResizeCamera();
 	onResizeRenderer();
+	PubSub.publish('resize');
 }
 
 const addEventListeners = () => {

@@ -42,7 +42,7 @@ const setupRenderer = () => {
 	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setSize(window.innerWidth, window.innerHeight);
 
-	if (window.location.search.indexOf('vr') > -1) stereoFx = new THREE.StereoEffect(renderer);
+	stereoFx = new THREE.StereoEffect(renderer);
 }
 
 const update = (delta) => {
@@ -52,7 +52,7 @@ const update = (delta) => {
 }
 
 const render = () => {
-	if (window.location.search.indexOf('vr') > -1) {
+	if (window.isVR === true) {
 		stereoFx.render(currentScene, currentCamera);
 	} else {
 		renderer.render(currentScene, currentCamera);

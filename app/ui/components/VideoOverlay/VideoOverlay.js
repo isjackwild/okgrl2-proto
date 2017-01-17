@@ -47,9 +47,19 @@ const data = Component => class extends React.Component {
 		this.video.src = window.mobile ? VIDEO_SRC_SD : VIDEO_SRC_HD;
 		if (window.mobile) this.video.controls = true;
 		this.subs.push(PubSub.subscribe('video.show', this.show));
+		this.subs.push(PubSub.subscribe('resize', this.onResize));
 		this.wrapper = document.getElementsByClassName('video-wrapper')[0];
 		this.shim = document.getElementsByClassName('video-wrapper__shim')[0];
 		TweenLite.set(this.shim, { opacity: 0 });
+		TweenLite.set(this.frame, {
+			y: window.innerHeight * -1 - 150,
+			rotation: (Math.random() * 20) - 10,
+			force3D: true
+		});
+	}
+
+	onResize() {
+		if (this.state.isVisible) return;
 		TweenLite.set(this.frame, {
 			y: window.innerHeight * -1 - 150,
 			rotation: (Math.random() * 20) - 10,

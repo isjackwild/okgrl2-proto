@@ -36,8 +36,8 @@ export const init = (geometries, textures) => {
 		geometries[5],
 		geometries[6],
 		geometries[7],
-		geometries[8],
-		geometries[9],
+		// geometries[8],
+		// geometries[9],
 		geometries[10]
 
 		// geometries[4],

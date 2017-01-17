@@ -46,7 +46,6 @@ const onDeviceOrientation = ({ clientX, clientY }) => {
 const onClick = ({ clientX, clientY, touches }) => {
 	let x, y;
 	if (touches) {
-		console.log(touches[0]);
 		x = 2 * (touches[0].clientX / window.innerWidth) - 1;
 		y = 1 - 2 * (touches[0].clientY / window.innerHeight);
 	} else {
@@ -61,7 +60,7 @@ const onClick = ({ clientX, clientY, touches }) => {
 const castFocus = () => {
 	let found = false;
 	intersectableObjects.forEach((target) => {
-		const intersects = raycaster.intersectObject( target.hitArea, false );
+		const intersects = raycaster.intersectObject( target.hitArea, true );
 		if (intersects.length) {
 			found = true;
 			target.onFocus();

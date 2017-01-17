@@ -8,19 +8,21 @@ let tween;
 
 const onTargetFocus = () => {
 	if (tween) tween.kill();
-	const viewfinder = document.getElementsByClassName('camera-ui__viewfinder')[0];
+	console.log(1);
+	const viewfinder = document.getElementsByClassName('camera-ui__viewfinder');
 	tween = TweenLite.to(viewfinder, 0.55, {scaleX: 0.6, scaleY: 0.6, ease: Back.easeOut.config(3.5)});
 }
 
 const onTargetBlur = () => {
 	if (tween) tween.kill();
-	const viewfinder = document.getElementsByClassName('camera-ui__viewfinder')[0];
+	console.log(2);
+	const viewfinder = document.getElementsByClassName('camera-ui__viewfinder');
 	tween = TweenLite.to(viewfinder, 0.55, {scaleX: 1, scaleY: 1, ease: Back.easeOut.config(3.5)});
 }
 PubSub.subscribe('viewfinder.focus', onTargetFocus);
 PubSub.subscribe('viewfinder.blur', onTargetBlur);
 
-const CameraUi = ({ isVisible, name, link }) => {
+const CameraUi = ({ isVisible, isVR }) => {
 	const takePhoto = () => {
 		const canvas = document.getElementsByClassName('canvas')[0];
 		const flash = document.getElementsByClassName('camera-ui__flash')[0];
@@ -61,16 +63,32 @@ const CameraUi = ({ isVisible, name, link }) => {
 
 
 	return (
-		<div className="camera-ui">
-			<div className="camera-ui__viewfinder">
+		<div className={`camera-ui ${isVR ? 'camera-ui--vr' : ''}`}>
+			<div className="camera-ui__viewfinder-wrapper">
+				<div className="camera-ui__viewfinder"></div>
 			</div>
-			<div
-				className="camera-ui__trigger"
-				onClick={takePhoto.bind(this)}
-				onTouchStart={e => e.currentTarget.classList.add('camera-ui__trigger--touched')}
-				onTouchEnd={e => e.currentTarget.classList.remove('camera-ui__trigger--touched')}
-			></div>
-			<div className="camera-ui__flash"></div>
+			{ isVR ?
+				<div className="camera-ui__viewfinder-wrapper">
+					<div className="camera-ui__viewfinder"></div>
+				</div>
+				:
+				null
+			}
+			{ !isVR ?
+				<div
+					className="camera-ui__trigger"
+					onClick={takePhoto.bind(this)}
+					onTouchStart={e => e.currentTarget.classList.add('camera-ui__trigger--touched')}
+					onTouchEnd={e => e.currentTarget.classList.remove('camera-ui__trigger--touched')}
+				></div>
+				:
+				null
+			}
+			{ !isVR ?
+				<div className="camera-ui__flash"></div>
+				:
+				null
+			}
 		</div>
 	);
 };
